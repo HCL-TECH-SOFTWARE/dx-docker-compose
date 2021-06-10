@@ -1,0 +1,116 @@
+# Copyright 2021 HCL Technologies
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+version: "3.8"
+
+services:
+  core:
+    image: ${DX_DOCKER_IMAGE_CORE:?'Missing docker image environment parameter'}
+    volumes:
+      - ./volumes/core/wp_profile:/opt/HCL/wp_profile
+    ports:
+      - "7777:7777"
+      - "10020:10020"
+      - "10039:10039"
+      - "10041:10041"
+      - "10200:10200"
+      - "10202:10202"
+      - "10033:10033"
+      - "10203:10203"
+    networks:
+      - default
+  ringapi:
+    depends_on:
+      - core
+    image: ${DX_DOCKER_IMAGE_RINGAPI:?'Missing docker image environment parameter'}
+    environment: 
+      - DEBUG=ringapi-server:*
+      - PORTAL_PORT=10039 
+      - PORTAL_HOST=core
+      - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'}:3000,http://${DX_HOSTNAME:?'Please set hostname'}:5000,http://${DX_HOSTNAME:?'Please set hostname'}:10039,http://${DX_HOSTNAME:?'Please set hostname'}:5500,http://${DX_HOSTNAME:?'Please set hostname'}:5501
+    ports:
+      - "4000:3000"
+    networks:
+      - default
+  dam:
+    depends_on:
+      - dam-db
+    image: ${DX_DOCKER_IMAGE_DAM:?'Missing docker image environment parameter'}
+    environment:
+      - DEBUG=@medialibrary/server:*
+      - POSTGRES_DB_URI=postgres://medialibrary:1234@dam-db/test
+      - EXTERNAL_RING_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
+      - EXTERNAL_RING_API_PORT=4000
+      - RING_API_HOST=ringapi
+      - RING_API_PORT=3000
+      - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'}:10039
+      - IMAGE_PROCESSOR_API_HOST=image-processor
+      - IMAGE_PROCESSOR_API_PORT=8080
+      - EXTERNAL_IMAGE_PROCESSOR_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
+      - EXTERNAL_IMAGE_PROCESSOR_API_PORT=3500
+      - EXTERNAL_BASE_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
+      - EXTERNAL_BASE_API_PORT=3000
+    ports:
+      - "3000:3001"
+    volumes:
+      - ./volumes/dam/upload:/opt/app/upload
+    networks:
+      - default
+  image-processor:
+    image: ${DX_DOCKER_IMAGE_IMAGE_PROCESSOR:?'Missing docker image environment parameter'}
+    environment: 
+      - DEBUG=*
+      - HOST=0.0.0.0 
+      - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'}:3000,http://${DX_HOSTNAME:?'Please set hostname'}:10039
+    ports:
+      - "3500:8080"
+    networks:
+      - default
+  cc:
+    depends_on:
+      - dam-db
+    image: ${DX_DOCKER_IMAGE_CC:?'Missing docker image environment parameter'}
+    ports:
+      - "5000:3000"
+    environment: 
+      - DEBUG=@content-ui/server:*
+      - PORTAL_PORT=10039 
+      - PORTAL_HOST=core
+      - EXTERNAL_RING_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
+      - EXTERNAL_RING_API_PORT=4000
+      - RING_API_HOST=ringapi
+      - RING_API_PORT=3000
+      - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'}:10039
+    networks:
+      - default
+  dam-db:
+    image: ${DX_DOCKER_IMAGE_DAM_DB:?'Missing docker image environment parameter'}
+    environment:
+      POSTGRES_DB: test
+      POSTGRES_USER: medialibrary
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_MODE: primary
+      POSTGRES_REPLICATION_USER: replication_user
+      POSTGRES_REPLICATION_PASSWORD: replication_password
+      POSTGRES_REPLICATION_NETWORK: 172.29.0.0/16
+      POSTGRES_WAL_SENDERS: 5
+      POSTGRES_WAL_KEEP_SEGMENTS: 64
+    volumes:
+      - ./volumes/dam/db:/var/lib/pgsql/11/data
+    ports:
+      - "5432:5432"
+    networks:
+      - default
+networks:
+  default:
