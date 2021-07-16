@@ -24,7 +24,7 @@ Linux/MAC:
 
 ```bash
 cd ./local-docker-compose
-sh load.sh <docker-image-archives-directory>
+bash load.sh <docker-image-archives-directory>
 ```
 
 Windows:
