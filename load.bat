@@ -33,6 +33,7 @@ set listOfImages[2]=DX_DOCKER_IMAGE_DATABASE_DIGITAL_ASSET_MANAGER:hcl-dx-postgr
 set listOfImages[3]=DX_DOCKER_IMAGE_DIGITAL_ASSET_MANAGER:hcl-dx-digital-asset-manager
 set listOfImages[4]=DX_DOCKER_IMAGE_RING_API:hcl-dx-ringapi
 set listOfImages[5]=DX_DOCKER_IMAGE_CORE:hcl-dx-core
+set listOfImages[5]=DX_DOCKER_IMAGE_DESIGN_STUDIO:hcl-dx-design-studio
 
 SET DX_DOCKER_IMAGE_CONTENT_COMPOSER=""
 SET DX_DOCKER_IMAGE_IMAGE_PROCESSOR=""
@@ -40,6 +41,7 @@ SET DX_DOCKER_IMAGE_DATABASE_DIGITAL_ASSET_MANAGER=""
 SET DX_DOCKER_IMAGE_DIGITAL_ASSET_MANAGER=""
 SET DX_DOCKER_IMAGE_RING_API=""
 SET DX_DOCKER_IMAGE_CORE=""
+SET DX_DOCKER_IMAGE_DESIGN_STUDIO:=""
 
     for /l %%i in (0,1,5) do ( 
         SET imageName=!listOfImages[%%i]!
@@ -57,6 +59,7 @@ SET DX_DOCKER_IMAGE_CORE=""
                             IF %%a==DX_DOCKER_IMAGE_DIGITAL_ASSET_MANAGER SET DX_DOCKER_IMAGE_DIGITAL_ASSET_MANAGER=!imageNameTag:~14!
                             IF %%a==DX_DOCKER_IMAGE_RING_API SET DX_DOCKER_IMAGE_RING_API=!imageNameTag:~14!
                             IF %%a==DX_DOCKER_IMAGE_CORE SET DX_DOCKER_IMAGE_CORE=!imageNameTag:~14!
+                            IF %%a==DX_DOCKER_IMAGE_DESIGN_STUDIO SET DX_DOCKER_DESIGN_STUDIO=!imageNameTag:~14!
                         ) ELSE (
                             call echo "Error occured while loading %%b*.tar.gz file into docker"
                         )
@@ -88,7 +91,9 @@ IF %%m==DX_DOCKER_IMAGE_CONTENT_COMPOSER  (
 ) ELSE IF %%m==DX_DOCKER_IMAGE_RING_API (
     IF %DX_DOCKER_IMAGE_RING_API%=="" ( echo %%m=%%n) ELSE ( echo %%m=%DX_DOCKER_IMAGE_RING_API%)
 ) ELSE IF %%m==DX_DOCKER_IMAGE_CORE (
-    IF %DX_DOCKER_IMAGE_CORE%=="" ( echo %%m=%%n) ELSE ( echo %%m=%DX_DOCKER_IMAGE_CORE%)   
+    IF %DX_DOCKER_IMAGE_CORE%=="" ( echo %%m=%%n) ELSE ( echo %%m=%DX_DOCKER_IMAGE_CORE%) 
+) ELSE IF %%m==DX_DOCKER_IMAGE_DESIGN_STUDIO (
+    IF %DX_DOCKER_IMAGE_DESIGN_STUDIO%=="" ( echo %%m=%%n) ELSE ( echo %%m=%DX_DOCKER_IMAGE_DESIGN_STUDIO%)    
 ) else ( echo %%m)
 ))>result.properties
 DEL dx.properties

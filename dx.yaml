@@ -94,6 +94,23 @@ services:
       - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'}:10039
     networks:
       - default
+  ds:
+    depends_on:
+      - ringapi
+    image: ${DX_DOCKER_IMAGE_DS:?'Missing docker image environment parameter'}
+    ports:
+      - "5500:3000"
+    environment: 
+      - DEBUG=@site-manager/server:*
+      - PORTAL_PORT=10039 
+      - PORTAL_HOST=core
+      - EXTERNAL_RING_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
+      - EXTERNAL_RING_API_PORT=4000
+      - RING_API_HOST=ringapi
+      - RING_API_PORT=3000
+      - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'}:10039
+    networks:
+      - default
   dam-db:
     image: ${DX_DOCKER_IMAGE_DAM_DB:?'Missing docker image environment parameter'}
     environment:
