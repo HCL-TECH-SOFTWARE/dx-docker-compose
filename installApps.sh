@@ -17,14 +17,15 @@
 # This script installs CC and DAM portlets into DX Core running in a docker-compose environment
 
 echo "#############################################################################"
-echo "Installing CC and DAM portlets using DX_HOSTNAME=$DX_HOSTNAME"
+echo "Installing CC, DS and DAM portlets using DX_HOSTNAME=$DX_HOSTNAME"
 echo "#############################################################################"
 echo ""
 docker-compose exec core sh -c "/opt/HCL/wp_profile/ConfigEngine/./ConfigEngine.sh enable-headless-content -DWasPassword=wpsadmin -DPortalAdminPwd=wpsadmin -Dstatic.ui.url=http://$DX_HOSTNAME:5000/dx/ui/content/static"
 docker-compose exec core sh -c "/opt/HCL/wp_profile/ConfigEngine/./ConfigEngine.sh enable-media-library -DWasPassword=wpsadmin -DPortalAdminPwd=wpsadmin -DdigitalAssets.baseUrl=http://$DX_HOSTNAME:3000 -DdigitalAssets.uiSuffix=/#/home/media?hcldam=true -Dexperience.api.url=http://$DX_HOSTNAME:4000/dx/api/core/v0 -Dstatic.ui.url=http://$DX_HOSTNAME:3000/dx/ui/dam/static"
+docker-compose exec core sh -c "/opt/HCL/wp_profile/ConfigEngine/./ConfigEngine.sh enable-content-sites -DWasPassword=wpsadmin -DPortalAdminPwd=wpsadmin -Dcontentsites.static.ui.url=http://$DX_HOSTNAME:5500/dx/ui/site-manager/static"
 echo ""
 echo "############################################################################"
-echo "Installed CC and DAM portlets using DX_HOSTNAME=$DX_HOSTNAME"
+echo "Installed CC, DS and DAM portlets using DX_HOSTNAME=$DX_HOSTNAME"
 echo "############################################################################"
 echo ""
 echo "###############################################################"
