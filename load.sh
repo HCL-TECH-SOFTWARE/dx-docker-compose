@@ -58,7 +58,7 @@ listOfImages+=("DX_DOCKER_IMAGE_DATABASE_DIGITAL_ASSET_MANAGER:hcl-dx-postgres")
 listOfImages+=("DX_DOCKER_IMAGE_DIGITAL_ASSET_MANAGER:hcl-dx-digital-asset-manager")
 listOfImages+=("DX_DOCKER_IMAGE_RING_API:hcl-dx-ringapi")
 listOfImages+=("DX_DOCKER_IMAGE_CORE:hcl-dx-core")
-listOfImages+=("DX_DOCKER_IMAGE_DESIGN_STUDIO:hcl-dx-design-studio")
+listOfImages+=("DX_DOCKER_IMAGE_DESIGN_STUDIO:hcl-dx-site-manager")
 
 
 # Loop through the array to upload the docker image and update the properties file

@@ -33,7 +33,7 @@ set listOfImages[2]=DX_DOCKER_IMAGE_DATABASE_DIGITAL_ASSET_MANAGER:hcl-dx-postgr
 set listOfImages[3]=DX_DOCKER_IMAGE_DIGITAL_ASSET_MANAGER:hcl-dx-digital-asset-manager
 set listOfImages[4]=DX_DOCKER_IMAGE_RING_API:hcl-dx-ringapi
 set listOfImages[5]=DX_DOCKER_IMAGE_CORE:hcl-dx-core
-set listOfImages[5]=DX_DOCKER_IMAGE_DESIGN_STUDIO:hcl-dx-design-studio
+set listOfImages[5]=DX_DOCKER_IMAGE_DESIGN_STUDIO:hcl-dx-site-manager
 
 SET DX_DOCKER_IMAGE_CONTENT_COMPOSER=""
 SET DX_DOCKER_IMAGE_IMAGE_PROCESSOR=""
