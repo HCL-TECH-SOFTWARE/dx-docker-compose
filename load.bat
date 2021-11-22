@@ -29,11 +29,11 @@ IF exist %filePath% (
 cd %filePath%
 set listOfImages[0]=DX_DOCKER_IMAGE_CONTENT_COMPOSER:hcl-dx-content-composer
 set listOfImages[1]=DX_DOCKER_IMAGE_IMAGE_PROCESSOR:hcl-dx-image-processor
-set listOfImages[2]=DX_DOCKER_IMAGE_DATABASE_DIGITAL_ASSET_MANAGER:hcl-dx-postgres
+set listOfImages[2]=DX_DOCKER_IMAGE_DATABASE_DIGITAL_ASSET_MANAGER:hcl-dx-persistence-image
 set listOfImages[3]=DX_DOCKER_IMAGE_DIGITAL_ASSET_MANAGER:hcl-dx-digital-asset-manager
 set listOfImages[4]=DX_DOCKER_IMAGE_RING_API:hcl-dx-ringapi
 set listOfImages[5]=DX_DOCKER_IMAGE_CORE:hcl-dx-core
-set listOfImages[5]=DX_DOCKER_IMAGE_DESIGN_STUDIO:hcl-dx-site-manager
+set listOfImages[5]=DX_DOCKER_IMAGE_DESIGN_STUDIO:hcl-dx-design-studio-image
 
 SET DX_DOCKER_IMAGE_CONTENT_COMPOSER=""
 SET DX_DOCKER_IMAGE_IMAGE_PROCESSOR=""
