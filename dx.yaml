@@ -16,6 +16,7 @@ version: "3.8"
 
 services:
   core:
+    container_name: core
     image: ${DX_DOCKER_IMAGE_CORE:?'Missing docker image environment parameter'}
     volumes:
       - ./volumes/core/wp_profile:/opt/HCL/wp_profile
