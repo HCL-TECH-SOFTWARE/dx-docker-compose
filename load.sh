@@ -29,7 +29,7 @@ function updateProperties ()
     replaceValue="$1=$2"
     pathValue=$3
     strSearchAndReplace="s/${searchValue}.*/${replaceValue//\//\\/}/"
-    sed -i '' ${strSearchAndReplace} ${pathValue}/dx.properties
+    sed -i '${strSearchAndReplace}' ${pathValue}/dx.properties
 }
 
 CWD="$PWD"
