@@ -81,8 +81,6 @@ services:
     networks:
       - default
   cc:
-    depends_on:
-      - dam-db
     image: ${DX_DOCKER_IMAGE_CC:?'Missing docker image environment parameter'}
     ports:
       - "5000:3000"
