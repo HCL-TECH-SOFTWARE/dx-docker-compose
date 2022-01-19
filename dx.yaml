@@ -106,6 +106,7 @@ services:
       - PORTAL_PORT=10039 
       - PORTAL_HOST=${DX_HOSTNAME:?'Please set hostname'}
       - EXTERNAL_RING_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
+      - WCMREST_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
       - EXTERNAL_RING_API_PORT=4000
       - RING_API_HOST=ringapi
       - RING_API_PORT=3000
