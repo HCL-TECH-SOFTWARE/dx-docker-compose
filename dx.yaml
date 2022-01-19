@@ -48,7 +48,7 @@ services:
   dam:
     depends_on:
       dam-db-pool:
-        condition: service_healthy 
+        condition: service_healthy  
     image: ${DX_DOCKER_IMAGE_DAM:?'Missing docker image environment parameter'}
     environment:
       - DEBUG=@medialibrary/server:*
@@ -104,7 +104,7 @@ services:
     environment: 
       - DEBUG=@site-manager/server:*
       - PORTAL_PORT=10039 
-      - PORTAL_HOST=dx-core
+      - PORTAL_HOST=${DX_HOSTNAME:?'Please set hostname'}
       - EXTERNAL_RING_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
       - EXTERNAL_RING_API_PORT=4000
       - RING_API_HOST=ringapi
@@ -114,19 +114,19 @@ services:
       - default
   dam-db-node-0:
     container_name: dx-dam-db-node-0
-    hostname: dam-db-node-0
+    hostname: dx-dam-db-node-0
     image: ${DX_DOCKER_IMAGE_DAM_DB_NODE:?'Missing docker image environment parameter'}   
     environment:
       POSTGRES_DB: dxmediadb
       POSTGRES_USER: dxuser
       POSTGRES_PASSWORD: d1gitalExperience
       POSTGRES_REPLICATION_USER: repdxuser
-      POSTGRES_REPLICATION_PASSWORD: d1gitalRepExperience
+      POSTGRES_REPLICATION_PASSWORD: d1gitalExperience
       DAM_USER: damuser
       POSTGRES_WAL_SENDERS: 5
       POSTGRES_WAL_KEEP_SEGMENTS: 64
       REPMGR_PORT_NUMBER: 5432
-      REPMGR_PARTNER_NODES: dx-dam-db-node-0; dx-dam-db-node-1; dx-dam-db-node-2
+      REPMGR_PARTNER_NODES: dx-dam-db-node-0;
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 30s
@@ -134,65 +134,15 @@ services:
       retries: 3
     ports:
     - "5433:5432"
-  dam-db-node-1:
-    container_name: dx-dam-db-node-1
-    hostname: dam-db-node-1
-    image: ${DX_DOCKER_IMAGE_DAM_DB_NODE:?'Missing docker image environment parameter'}   
-    environment:
-      POSTGRES_DB: dx_user
-      POSTGRES_USER: dxuser
-      POSTGRES_PASSWORD: d1gitalExperience
-      POSTGRES_REPLICATION_USER: repdxuser
-      POSTGRES_REPLICATION_PASSWORD: d1gitalRepExperience
-      DAM_USER: damuser
-      POSTGRES_WAL_SENDERS: 5
-      POSTGRES_WAL_KEEP_SEGMENTS: 64
-      REPMGR_PORT_NUMBER: 5432
-      REPMGR_PARTNER_NODES: dx-dam-db-node-0; dx-dam-db-node-1; dx-dam-db-node-2
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 30s
-      timeout: 30s
-      retries: 3
-    ports:
-    - "5434:5432" 
-    depends_on:
-      dam-db-node-0:
-        condition: service_healthy 
-  dam-db-node-2:
-    container_name: dx-dam-db-node-2
-    hostname: dx-dam-db-node-2
-    image: ${DX_DOCKER_IMAGE_DAM_DB_NODE:?'Missing docker image environment parameter'}   
-    environment:
-      POSTGRES_DB: dxmediadb
-      POSTGRES_USER: dxuser
-      POSTGRES_PASSWORD: d1gitalExperience
-      POSTGRES_REPLICATION_USER: repdxuser
-      POSTGRES_REPLICATION_PASSWORD: d1gitalRepExperience
-      DAM_USER: damuser
-      POSTGRES_WAL_SENDERS: 5
-      POSTGRES_WAL_KEEP_SEGMENTS: 64
-      REPMGR_PORT_NUMBER: 5432
-      REPMGR_PARTNER_NODES: dx-dam-db-node-0; dx-dam-db-node-1; dx-dam-db-node-2
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 30s
-      timeout: 30s
-      retries: 3
-    ports:
-    - "5435:5432"
-    depends_on:
-        dam-db-node-1:
-          condition: service_healthy  
   dam-db-pool:
     container_name: dx-dam-db-pool
     image: ${DX_DOCKER_IMAGE_DAM_DB_CONNECTION_POOL:?'Missing docker image environment parameter'}   
     ports:
       - 5432:5432
     environment:
-      - PGPOOL_BACKEND_NODES=0:dx-dam-db-node-0:5432,1:dx-dam-db-node-1:5433,2:dx-dam-db-node-2:5434
+      - PGPOOL_BACKEND_NODES=0:dx-dam-db-node-0:5432
       - PGPOOL_SR_CHECK_USER=repdxuser
-      - PGPOOL_SR_CHECK_PASSWORD=d1gitalRepExperience
+      - PGPOOL_SR_CHECK_PASSWORD=d1gitalExperience
       - PGPOOL_POSTGRES_USERNAME=dxuser
       - PGPOOL_POSTGRES_PASSWORD=d1gitalExperience
       - PGPOOL_ADMIN_USERNAME=admin
@@ -200,13 +150,14 @@ services:
       - PGPOOL_ENABLE_LOAD_BALANCING=yes
       - PGPOOL_POSTGRES_CUSTOM_USERS=damuser
       - PGPOOL_POSTGRES_CUSTOM_PASSWORDS=1234
-    healthcheck:
-      test: ["CMD", "healthcheck.sh"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
     networks:
       - default
     depends_on:
         dam-db-node-0:
-          condition: service_healthy  
+          condition: service_healthy 
+    healthcheck:
+      test: ["CMD-SHELL", "sh scripts/healthcheck.sh"]
+      interval: 30s
+      timeout: 15s
+      retries: 5
+  
