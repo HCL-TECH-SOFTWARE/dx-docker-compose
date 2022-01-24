@@ -45,7 +45,7 @@ SET DX_DOCKER_IMAGE_RING_API=""
 SET DX_DOCKER_IMAGE_CORE=""
 SET DX_DOCKER_IMAGE_DESIGN_STUDIO=""
 
-    for /l %%i in (0,1,5) do ( 
+    for /l %%i in (0,1,7) do ( 
         SET imageName=!listOfImages[%%i]!
         for /f "tokens=1,2 delims=:" %%a in ("!listOfImages[%%i]!") do (
             IF EXIST %%b*.tar.gz (
