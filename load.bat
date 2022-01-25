@@ -62,7 +62,7 @@ SET DX_DOCKER_IMAGE_DESIGN_STUDIO=""
                             IF %%a==DX_DOCKER_IMAGE_DIGITAL_ASSET_MANAGER SET DX_DOCKER_IMAGE_DIGITAL_ASSET_MANAGER=!imageNameTag:~14!
                             IF %%a==DX_DOCKER_IMAGE_RING_API SET DX_DOCKER_IMAGE_RING_API=!imageNameTag:~14!
                             IF %%a==DX_DOCKER_IMAGE_CORE SET DX_DOCKER_IMAGE_CORE=!imageNameTag:~14!
-                            IF %%a==DX_DOCKER_IMAGE_DESIGN_STUDIO SET DX_DOCKER_DESIGN_STUDIO=!imageNameTag:~14!
+                            IF %%a==DX_DOCKER_IMAGE_DESIGN_STUDIO SET DX_DOCKER_IMAGE_DESIGN_STUDIO=!imageNameTag:~14!
                         ) ELSE (
                             call echo "Error occured while loading %%b*.tar.gz file into docker"
                         )
