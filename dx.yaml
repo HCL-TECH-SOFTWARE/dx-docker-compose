@@ -39,7 +39,7 @@ services:
     environment: 
       - DEBUG=ringapi-server:*
       - PORTAL_PORT=10039 
-      - PORTAL_HOST=${DX_HOSTNAME:?'Please set hostname'}
+      - PORTAL_HOST=dx-core
       - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'}:3000,http://${DX_HOSTNAME:?'Please set hostname'}:5000,http://${DX_HOSTNAME:?'Please set hostname'}:10039,http://${DX_HOSTNAME:?'Please set hostname'}:5500,http://${DX_HOSTNAME:?'Please set hostname'}:5501
     ports:
       - "4000:3000"
@@ -55,9 +55,9 @@ services:
       - POSTGRES_DB_URI=postgres://dxuser:d1gitalExperience@dx-dam-db-pool/dxmediadb
       - EXTERNAL_RING_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
       - EXTERNAL_RING_API_PORT=4000
-      - RING_API_HOST=dx-ringapi
+      - RING_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
       - RING_API_PORT=4000
-      - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'}:10039
+      - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'}:3000,http://${DX_HOSTNAME:?'Please set hostname'}:5000,http://${DX_HOSTNAME:?'Please set hostname'}:10039,http://${DX_HOSTNAME:?'Please set hostname'}:5500,http://${DX_HOSTNAME:?'Please set hostname'}:5501
       - IMAGE_PROCESSOR_API_HOST=image-processor
       - IMAGE_PROCESSOR_API_PORT=8080
       - EXTERNAL_IMAGE_PROCESSOR_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
