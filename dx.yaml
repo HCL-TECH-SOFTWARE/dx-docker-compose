@@ -57,7 +57,7 @@ services:
       - EXTERNAL_RING_API_PORT=4000
       - RING_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
       - RING_API_PORT=4000
-      - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'}:3000,http://${DX_HOSTNAME:?'Please set hostname'}:5000,http://${DX_HOSTNAME:?'Please set hostname'}:10039,http://${DX_HOSTNAME:?'Please set hostname'}:5500,http://${DX_HOSTNAME:?'Please set hostname'}:5501
+      - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'}:3000,http://${DX_HOSTNAME:?'Please set hostname'}:4000,http://${DX_HOSTNAME:?'Please set hostname'}:5000,http://${DX_HOSTNAME:?'Please set hostname'}:10039,http://${DX_HOSTNAME:?'Please set hostname'}:5500,http://${DX_HOSTNAME:?'Please set hostname'}:5501
       - IMAGE_PROCESSOR_API_HOST=image-processor
       - IMAGE_PROCESSOR_API_PORT=8080
       - EXTERNAL_IMAGE_PROCESSOR_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
