@@ -34,18 +34,19 @@ services:
   ringapi:
     container_name: dx-ringapi
     depends_on:
-      - core
+      - dx-core
     image: ${DX_DOCKER_IMAGE_RINGAPI:?'Missing docker image environment parameter'}
     environment: 
       - DEBUG=ringapi-server:*
       - PORTAL_PORT=10039 
       - PORTAL_HOST=dx-core
-      - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'}:3000,http://${DX_HOSTNAME:?'Please set hostname'}:5000,http://${DX_HOSTNAME:?'Please set hostname'}:10039,http://${DX_HOSTNAME:?'Please set hostname'}:5500,http://${DX_HOSTNAME:?'Please set hostname'}:5501
+      - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'}
     ports:
       - "4000:3000"
     networks:
       - default
   dam:
+    container_name: dx-dam
     depends_on:
       dam-db-pool:
         condition: service_healthy  
@@ -54,16 +55,16 @@ services:
       - DEBUG=@medialibrary/server:*
       - POSTGRES_DB_URI=postgres://dxuser:d1gitalExperience@dx-dam-db-pool/dxmediadb
       - EXTERNAL_RING_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
-      - EXTERNAL_RING_API_PORT=4000
-      - RING_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
-      - RING_API_PORT=4000
-      - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'}:3000,http://${DX_HOSTNAME:?'Please set hostname'}:4000,http://${DX_HOSTNAME:?'Please set hostname'}:5000,http://${DX_HOSTNAME:?'Please set hostname'}:10039,http://${DX_HOSTNAME:?'Please set hostname'}:5500,http://${DX_HOSTNAME:?'Please set hostname'}:5501
-      - IMAGE_PROCESSOR_API_HOST=image-processor
-      - IMAGE_PROCESSOR_API_PORT=8080
+      - EXTERNAL_RING_API_PORT=80
+      - RING_API_HOST=dx-ringapi
+      - RING_API_PORT=3000
+      - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'}
+      - IMAGE_PROCESSOR_API_HOST=dx-image-processor
+      - IMAGE_PROCESSOR_API_PORT=3500
       - EXTERNAL_IMAGE_PROCESSOR_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
-      - EXTERNAL_IMAGE_PROCESSOR_API_PORT=3500
+      - EXTERNAL_IMAGE_PROCESSOR_API_PORT=80
       - EXTERNAL_BASE_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
-      - EXTERNAL_BASE_API_PORT=3000
+      - EXTERNAL_BASE_API_PORT=80
     ports:
       - "3000:3001"
     volumes:
@@ -71,6 +72,7 @@ services:
     networks:
       - default
   image-processor:
+    container_name: dx-image-processor
     image: ${DX_DOCKER_IMAGE_IMAGE_PROCESSOR:?'Missing docker image environment parameter'}
     environment: 
       - DEBUG=*
@@ -81,6 +83,7 @@ services:
     networks:
       - default
   cc:
+    container_name: dx-cc
     image: ${DX_DOCKER_IMAGE_CC:?'Missing docker image environment parameter'}
     ports:
       - "5000:3000"
@@ -89,13 +92,14 @@ services:
       - PORTAL_PORT=10039 
       - PORTAL_HOST=${DX_HOSTNAME:?'Please set hostname'}
       - EXTERNAL_RING_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
-      - EXTERNAL_RING_API_PORT=4000
+      - EXTERNAL_RING_API_PORT=80
       - RING_API_HOST=dx-ringapi
-      - RING_API_PORT=3000
-      - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'}:10039
+      - RING_API_PORT=4000
+      - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'}
     networks:
       - default
   ds:
+    container_name: dx-ds
     depends_on:
       - ringapi
     image: ${DX_DOCKER_IMAGE_DS:?'Missing docker image environment parameter'}
@@ -103,14 +107,14 @@ services:
       - "5500:3000"
     environment: 
       - DEBUG=@site-manager/server:*
-      - PORTAL_PORT=10039 
+      - PORTAL_PORT=80 
       - PORTAL_HOST=${DX_HOSTNAME:?'Please set hostname'}
       - EXTERNAL_RING_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
       - WCMREST_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
-      - EXTERNAL_RING_API_PORT=4000
+      - EXTERNAL_RING_API_PORT=80
       - RING_API_HOST=ringapi
-      - RING_API_PORT=3000
-      - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'}:10039
+      - RING_API_PORT=80
+      - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'}
     networks:
       - default
   dam-db-node-0:
@@ -135,6 +139,8 @@ services:
       retries: 3
     ports:
     - "5433:5432"
+    networks:
+      - default
   dam-db-pool:
     container_name: dx-dam-db-pool
     image: ${DX_DOCKER_IMAGE_DAM_DB_CONNECTION_POOL:?'Missing docker image environment parameter'}   
@@ -161,4 +167,13 @@ services:
       interval: 30s
       timeout: 15s
       retries: 5
-  
+  nginx: 
+    image: nginx:latest
+    container_name: production_nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - default
