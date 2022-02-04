@@ -62,9 +62,9 @@ services:
       - IMAGE_PROCESSOR_API_HOST=dx-image-processor
       - IMAGE_PROCESSOR_API_PORT=8080
       - EXTERNAL_IMAGE_PROCESSOR_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
-      - EXTERNAL_IMAGE_PROCESSOR_API_PORT=3500
+      - EXTERNAL_IMAGE_PROCESSOR_API_PORT=80
       - EXTERNAL_BASE_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
-      - EXTERNAL_BASE_API_PORT=3500
+      - EXTERNAL_BASE_API_PORT=80
     ports:
       - "3000:3001"
     volumes:
@@ -77,7 +77,7 @@ services:
     environment: 
       - DEBUG=*
       - HOST=0.0.0.0 
-      - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'},http://${DX_HOSTNAME:?'Please set hostname'}:3000
+      - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'}
     ports:
       - "3500:8080"
     networks:
@@ -113,8 +113,8 @@ services:
       - WCMREST_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
       - EXTERNAL_RING_API_PORT=80
       - RING_API_HOST=ringapi
-      - RING_API_PORT=80
-      - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'}
+      - RING_API_PORT=3000
+      - CORS_ORIGIN=http://${DX_HOSTNAME:?'Please set hostname'},http://${DX_HOSTNAME:?'Please set hostname'}:10039
     networks:
       - default
   dam-db-node-0:
