@@ -150,17 +150,18 @@ docker stats
 Example output:
 
 ```bash
-CONTAINER ID        NAME                   CPU %               MEM USAGE / LIMIT     MEM %               NET I/O             BLOCK I/O           PIDS
-39de0fe58979        dx_ringapi_1           0.00%               136.8MiB / 7.778GiB   0.43%               3.91MB / 3.11MB     0B / 38.9kB         23
-2aafeeb16d5d        dx_dam_2               0.07%               554.5MiB / 7.778GiB   1.74%               48.7MB / 113MB      0B / 29.7kB         78
-d5191b2f2cea        dx_dam_1               0.06%               583.4MiB / 7.778GiB   1.83%               79MB / 145MB        0B / 30.7kB         78
-b1e4c609c01e        dx_cc_1                0.00%               93.62MiB / 7.778GiB   0.29%               5.25kB / 0B         0B / 70.7kB         23
-bfce5e09a40c        dx_image-processor_1   0.00%               460.3MiB / 7.778GiB   1.45%               55.7MB / 15.4MB     0B / 128kB          23
-6ae153da18dd        dx_image-processor_3   0.00%               427.1MiB / 7.778GiB   1.34%               49.9MB / 12.8MB     0B / 95.2kB         23
-46e63880a40f        dx_image-processor_4   0.00%               429.2MiB / 7.778GiB   1.35%               55.9MB / 15.3MB     0B / 111kB          23
-9fcc921bb044        dx_image-processor_2   0.00%               411.4MiB / 7.778GiB   1.29%               44.1MB / 11.5MB     0B / 86kB           23
-b93a7b7576cf        dx_core_1              0.34%               1.165GiB / 7.778GiB   3.75%               2.35MB / 4.04MB     0B / 85.5MB         215
-b5062719048d        dx_dam-db_1            0.33%               23.58MiB / 7.778GiB   0.07%               60.3MB / 53.6MB     0B / 461MB          13
+
+CONTAINER ID   NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O         PIDS
+ac7d2b805a21   dx-ds                0.16%     73.48MiB / 31.21GiB   0.23%     171kB / 16.4MB    0B / 16.4kB       23
+9348cf77c346   production_nginx     0.00%     7.008MiB / 31.21GiB   0.02%     11.1MB / 10.8MB   0B / 0B           9
+2e1ae12cb829   dx-dam               0.27%     493.4MiB / 31.21GiB   1.54%     263MB / 381MB     8.19kB / 19.5kB   78
+d449877cfec0   dx-dam-db-pool       0.05%     116.8MiB / 31.21GiB   0.37%     586MB / 659MB     0B / 1.44MB       36
+5370ef54b297   dx-ringapi           0.17%     104.2MiB / 31.21GiB   0.33%     1.45MB / 1.2MB    0B / 24.1kB       23
+6c091eb7fc4b   dx-dam-db-node-0     0.07%     63.26MiB / 31.21GiB   0.20%     414MB / 233MB     0B / 15.6MB       14
+46e4707b468f   dx-core              0.80%     2.137GiB / 31.21GiB   6.85%     1.62MB / 6.71MB   436MB / 563MB     375
+a99204a86308   dx-cc                0.19%     71.73MiB / 31.21GiB   0.22%     7.7kB / 0B        0B / 11.3kB       23
+877ff78dffbb   dx-image-processor   0.17%     426.3MiB / 31.21GiB   1.33%     17.5MB / 4.27MB   0B / 23kB         23
+
 ```
 
 To get an overview of running docker-compose services, you can run
@@ -172,18 +173,17 @@ docker-compose ps
 Example output:
 
 ```bash
-Name                   Command                          State   Ports
-------------------------------------------------------------------------------------------------------------------------
-dx_cc_1                /opt/app/start_all_server.sh     Up      0.0.0.0:5000->3000/tcp
-dx_core_1              sh -c WAS_ADMIN=${WAS_ADMI ...   Up      ..., 10038/tcp, 0.0.0.0:10039->10039/tcp, 10040/tcp, ...
-dx_dam-db_1            /start_postgres.sh               Up      0.0.0.0:5432->5432/tcp
-dx_dam_1               /opt/app/start_all_server.sh     Up      0.0.0.0:3000->3001/tcp
-dx_dam_2               /opt/app/start_all_server.sh     Up      0.0.0.0:3001->3001/tcp
-dx_image-processor_1   /home/dx_user/start_all_se ...   Up      0.0.0.0:6002->8080/tcp
-dx_image-processor_2   /home/dx_user/start_all_se ...   Up      0.0.0.0:6000->8080/tcp
-dx_image-processor_3   /home/dx_user/start_all_se ...   Up      0.0.0.0:6003->8080/tcp
-dx_image-processor_4   /home/dx_user/start_all_se ...   Up      0.0.0.0:6001->8080/tcp
-dx_ringapi_1           /opt/app/start_all_server.sh     Up      0.0.0.0:4000->3000/tcp
+CONTAINER ID   IMAGE                                                      COMMAND                  CREATED      STATUS                PORTS                                                                                                                                                                                                                                                                                                                                                                                                                      NAMES
+ac7d2b805a21   hcl/dx/design-studio:v0.6.0_20211213-1448                  "/opt/app/start_all_…"   3 days ago   Up 3 days             0.0.0.0:5500->3000/tcp, :::5500->3000/tcp                                                                                                                                                                                                                                                                                                                                                                                  dx-ds
+9348cf77c346   nginx:latest                                               "/docker-entrypoint.…"   3 days ago   Up 3 days             0.0.0.0:80->80/tcp, :::80->80/tcp, 0.0.0.0:443->443/tcp, :::443->443/tcp                                                                                                                                                                                                                                                                                                                                                   production_nginx
+2e1ae12cb829   hcl/dx/digital-asset-manager:v1.12.0_20211213-1448         "/opt/app/start_all_…"   3 days ago   Up 3 days             0.0.0.0:3000->3001/tcp, :::3000->3001/tcp                                                                                                                                                                                                                                                                                                                                                                                  dx-dam
+d449877cfec0   hcl/dx/persistence-connection-pool:v1.13.0_20211213-1457   "/scripts/entrypoint…"   3 days ago   Up 3 days (healthy)   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp                                                                                                                                                                                                                                                                                                                                                                                  dx-dam-db-pool
+5370ef54b297   hcl/dx/ringapi:v1.13.0_20211213-1457                       "/opt/app/start_all_…"   3 days ago   Up 3 days             0.0.0.0:4000->3000/tcp, :::4000->3000/tcp                                                                                                                                                                                                                                                                                                                                                                                  dx-ringapi
+6c091eb7fc4b   hcl/dx/persistence-node:v1.3_20211213-1454                 "/start_postgres.sh"     3 days ago   Up 3 days (healthy)   0.0.0.0:5433->5432/tcp, :::5433->5432/tcp                                                                                                                                                                                                                                                                                                                                                                                  dx-dam-db-node-0
+46e4707b468f   hcl/dx/core:v95_CF200_20211213-1442                        "sh -c /opt/app/entr…"   3 days ago   Up 3 days             0.0.0.0:7777->7777/tcp, :::7777->7777/tcp, 0.0.0.0:10020->10020/tcp, :::10020->10020/tcp, 10032/tcp, 0.0.0.0:10033->10033/tcp, :::10033->10033/tcp, 10034-10038/tcp, 0.0.0.0:10039->10039/tcp, :::10039->10039/tcp, 10040/tcp, 0.0.0.0:10041->10041/tcp, :::10041->10041/tcp, 10042/tcp, 0.0.0.0:10200->10200/tcp, :::10200->10200/tcp, 0.0.0.0:10202-10203->10202-10203/tcp, :::10202-10203->10202-10203/tcp, 10201/tcp   dx-core
+a99204a86308   hcl/dx/content-composer:v1.13.0_20211213-1443              "/opt/app/start_all_…"   3 days ago   Up 3 days             0.0.0.0:5000->3000/tcp, :::5000->3000/tcp                                                                                                                                                                                                                                                                                                                                                                                  dx-cc
+877ff78dffbb   hcl/dx/image-processor:v1.13.0_20211213-1446               "/home/dx_user/start…"   3 days ago   Up 3 days             0.0.0.0:3500->8080/tcp, :::3500->8080/tcp                                                                                                                                                                                                                                                                                                                                                                                  dx-image-processor
+
 ```
 
 ## Tips and tricks
@@ -213,7 +213,7 @@ Update the Ring API service configuration as described:
   ```yaml
   ringapi:
     # depends_on:
-    #   - core
+    #   - dx-core
   ```
   
 2. Update the `PORTAL_HOST` and `CORS_ORIGIN` paramter's values.
@@ -221,7 +221,7 @@ Update the Ring API service configuration as described:
   ```yaml
   environment: 
     - PORTAL_HOST=example.com
-    - CORS_ORIGIN=http://example.com:10039
+    - CORS_ORIGIN=http://example.com
   ```
   
 The result of the changes to the `ringapi` service should look similar to the snippet below: 
@@ -229,13 +229,13 @@ The result of the changes to the `ringapi` service should look similar to the sn
 ```yaml
 ringapi:
   # depends_on:
-  #   - core
+  #   - dx-core
   image: ${DX_DOCKER_IMAGE_RINGAPI:?'Missing docker image environment parameter'}
   environment: 
     - DEBUG=ringapi-server:*
     - PORTAL_PORT=10039 
     - PORTAL_HOST=example.com
-    - CORS_ORIGIN=http://example.com:10039,http://${DX_HOSTNAME:?'Please set hostname'}:3000,http://${DX_HOSTNAME:?'Please set hostname'}:5000,http://${DX_HOSTNAME:?'Please set hostname'}:10039,http://${DX_HOSTNAME:?'Please set hostname'}:5500,http://${DX_HOSTNAME:?'Please set hostname'}:5501
+    - CORS_ORIGIN=http://example.com
   ports:
     - "4000:3000"
   networks:
@@ -247,7 +247,7 @@ Update the Content Composer service configuration as described:
 ```yaml
 environment: 
   - PORTAL_HOST=example.com
-  - CORS_ORIGIN=http://example.com:10039
+  - CORS_ORIGIN=http://example.com
 ```
 
 ### Starting and stopping individual services
@@ -302,6 +302,20 @@ cd ./local-docker-compose
 installApps.bat
 ```
 
+### Connecting to your DX and applications.
+
+To access your dx environment, navigate to *http://<PORTAL_HOST>/wps/portal*
+
+Example: http://localhost/wps/portal
+
+To access dx admin console, navigate to *https://<PORTAL_HOST>:10041/ibm/console*
+
+Example: https://localhost:10041/ibm/console
+
+To access the ConfigWizard Server Admin console *https://<PORTAL_HOST>:10203/ibm/console*
+
+Example: https://localhost:10203/ibm/console
+
 ### Connecting into a docker-compose service via bash
 
 To bash into a docker container of a service, you can directly connect using the service name
@@ -313,5 +327,5 @@ docker-compose exec dam bash
 To connect into a specific container of a service (if there is multiple containers running for a service), you have to look up the name of the container e.g. using `docker-compose ps` and then run
 
 ```bash
-docker exec -it dx_dam_1 bash
+docker exec -it dx_dam bash
 ```
