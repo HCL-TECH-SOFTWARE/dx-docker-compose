@@ -216,12 +216,11 @@ Update the Ring API service configuration as described:
     #   - dx-core
   ```
   
-2. Update the `PORTAL_HOST` and `CORS_ORIGIN` paramter's values.
+2. Update the `PORTAL_HOST` parameter values.
 
   ```yaml
   environment: 
     - PORTAL_HOST=example.com
-    - CORS_ORIGIN=http://example.com
   ```
   
 The result of the changes to the `ringapi` service should look similar to the snippet below: 
@@ -235,7 +234,6 @@ ringapi:
     - DEBUG=ringapi-server:*
     - PORTAL_PORT=10039 
     - PORTAL_HOST=example.com
-    - CORS_ORIGIN=http://example.com
   ports:
     - "4000:3000"
   networks:
@@ -247,7 +245,6 @@ Update the Content Composer service configuration as described:
 ```yaml
 environment: 
   - PORTAL_HOST=example.com
-  - CORS_ORIGIN=http://example.com
 ```
 
 ### Starting and stopping individual services
