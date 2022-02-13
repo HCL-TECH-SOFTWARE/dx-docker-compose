@@ -17,7 +17,7 @@ All you need to do is to load the HCL DX docker images into your local docker re
 
 The load.sh script expects a path to a directory containing the docker image archives as a command line argument <docker-image-archives-directory>.
 
-**Note:** If you already loaded the DX docker images into a docker repository of your choice, you may skip executing `load.sh` or `load.bat`. 
+**Note:** If you already loaded the DX docker images into a docker repository of your choice, you may skip executing `load.sh` or `load.bat`.
 Please make sure to update the image names in the `dx.properties` file appropriately.
 
 Linux/MAC:
@@ -71,7 +71,7 @@ unset.bat
 ### Performance on Mac OS/Windows
 
 The performance for local docker volumes on Mac OS and Windows is quite slow.
-To improve especially the startup time of DX Core, you may choose to remove the persistent volume configuration. 
+To improve especially the startup time of DX Core, you may choose to remove the persistent volume configuration.
 To do so, remove the following lines from the docker-compose file:
 
 ```bash
@@ -97,9 +97,9 @@ If your user does not have permission to write to the persistent volumes locatio
 
 Here are some useful command line arguments to run `docker-compose up`:
 
-* `-d, --detach`: detached mode
-* `--remove-orphans`: this cleans up orphaned containers
-* `--scale SERVICE=NUM`: this lets you run multiple instances of a service (see further instructions below)
+- `-d, --detach`: detached mode
+- `--remove-orphans`: this cleans up orphaned containers
+- `--scale SERVICE=NUM`: this lets you run multiple instances of a service (see further instructions below)
 
 The service configuration in `dx.yaml` supports up to 2 instances of DAM and up to 4 instances of the image processor. Upfront please adjust the ports section and set a port range for DAM and image processor inside of the `dx.yaml` file.
 
@@ -151,16 +151,16 @@ Example output:
 
 ```bash
 
-CONTAINER ID   NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O         PIDS
-ac7d2b805a21   dx-ds                0.16%     73.48MiB / 31.21GiB   0.23%     171kB / 16.4MB    0B / 16.4kB       23
-9348cf77c346   production_nginx     0.00%     7.008MiB / 31.21GiB   0.02%     11.1MB / 10.8MB   0B / 0B           9
-2e1ae12cb829   dx-dam               0.27%     493.4MiB / 31.21GiB   1.54%     263MB / 381MB     8.19kB / 19.5kB   78
-d449877cfec0   dx-dam-db-pool       0.05%     116.8MiB / 31.21GiB   0.37%     586MB / 659MB     0B / 1.44MB       36
-5370ef54b297   dx-ringapi           0.17%     104.2MiB / 31.21GiB   0.33%     1.45MB / 1.2MB    0B / 24.1kB       23
-6c091eb7fc4b   dx-dam-db-node-0     0.07%     63.26MiB / 31.21GiB   0.20%     414MB / 233MB     0B / 15.6MB       14
-46e4707b468f   dx-core              0.80%     2.137GiB / 31.21GiB   6.85%     1.62MB / 6.71MB   436MB / 563MB     375
-a99204a86308   dx-cc                0.19%     71.73MiB / 31.21GiB   0.22%     7.7kB / 0B        0B / 11.3kB       23
-877ff78dffbb   dx-image-processor   0.17%     426.3MiB / 31.21GiB   1.33%     17.5MB / 4.27MB   0B / 23kB         23
+NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O         PIDS
+dx-ds                0.16%     73.48MiB / 31.21GiB   0.23%     171kB / 16.4MB    0B / 16.4kB       23
+production_nginx     0.00%     7.008MiB / 31.21GiB   0.02%     11.1MB / 10.8MB   0B / 0B           9
+dx-dam               0.27%     493.4MiB / 31.21GiB   1.54%     263MB / 381MB     8.19kB / 19.5kB   78
+dx-dam-db-pool       0.05%     116.8MiB / 31.21GiB   0.37%     586MB / 659MB     0B / 1.44MB       36
+dx-ringapi           0.17%     104.2MiB / 31.21GiB   0.33%     1.45MB / 1.2MB    0B / 24.1kB       23
+dx-dam-db-node-0     0.07%     63.26MiB / 31.21GiB   0.20%     414MB / 233MB     0B / 15.6MB       14
+dx-core              0.80%     2.137GiB / 31.21GiB   6.85%     1.62MB / 6.71MB   436MB / 563MB     375
+dx-cc                0.19%     71.73MiB / 31.21GiB   0.22%     7.7kB / 0B        0B / 11.3kB       23
+dx-image-processor   0.17%     426.3MiB / 31.21GiB   1.33%     17.5MB / 4.27MB   0B / 23kB         23
 
 ```
 
@@ -202,37 +202,38 @@ See below on how to bash into a docker-compose container.
 
 ### Running DX docker-compose in a hybrid setup
 
-In the case that you already have a fully configured DX Core (e.g. an on premise installation) up and running, you can choose to configure docker-compose to connect to the on premise environment. 
+In the case that you already have a fully configured DX Core (e.g. an on premise installation) up and running, you can choose to configure docker-compose to connect to the on premise environment.
 The below mentioned changes in `dx.yaml` need to be applied to make this work.
 
 **Note:** You will also have to configure your DX Core environment to connect to the services running docker-compose (e.g. configuration of DAM and Content Composer portlets). Please have a look in the official HCL DX Help Center to understand which changes need to be done, if necessary.
 
 Update the Ring API service configuration as described:
+
 1. Disable the `depends_on` parameter.
 
-  ```yaml
-  ringapi:
-    # depends_on:
-    #   - dx-core
-  ```
-  
+```yaml
+ringapi:
+  # depends_on:
+  #   - dx-core
+```
+
 2. Update the `PORTAL_HOST` parameter values.
 
-  ```yaml
-  environment: 
-    - PORTAL_HOST=example.com
-  ```
-  
-The result of the changes to the `ringapi` service should look similar to the snippet below: 
+```yaml
+environment:
+  - PORTAL_HOST=example.com
+```
+
+The result of the changes to the `ringapi` service should look similar to the snippet below:
 
 ```yaml
 ringapi:
   # depends_on:
   #   - dx-core
   image: ${DX_DOCKER_IMAGE_RINGAPI:?'Missing docker image environment parameter'}
-  environment: 
+  environment:
     - DEBUG=ringapi-server:*
-    - PORTAL_PORT=10039 
+    - PORTAL_PORT=10039
     - PORTAL_HOST=example.com
   ports:
     - "4000:3000"
@@ -243,7 +244,7 @@ ringapi:
 Update the Content Composer service configuration as described:
 
 ```yaml
-environment: 
+environment:
   - PORTAL_HOST=example.com
 ```
 
@@ -301,17 +302,17 @@ installApps.bat
 
 ### Connecting to your DX and applications.
 
-To access your dx environment, navigate to *http://<PORTAL_HOST>/wps/portal*
+To access your dx environment, navigate to _http://<PORTAL_HOST>/wps/portal_
 
-Example: http://localhost/wps/portal
+Example: http://example.com/wps/portal
 
-To access dx admin console, navigate to *https://<PORTAL_HOST>:10041/ibm/console*
+To access dx admin console, navigate to _https://<PORTAL_HOST>:10041/ibm/console_
 
-Example: https://localhost:10041/ibm/console
+Example: https://example.com:10041/ibm/console
 
-To access the ConfigWizard Server Admin console *https://<PORTAL_HOST>:10203/ibm/console*
+To access the ConfigWizard Server Admin console _https://<PORTAL_HOST>:10203/ibm/console_
 
-Example: https://localhost:10203/ibm/console
+Example: https://example.com:10203/ibm/console
 
 ### Connecting into a docker-compose service via bash
 
