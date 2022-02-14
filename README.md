@@ -214,7 +214,7 @@ Update the Ring API service configuration as described:
 ```yaml
 ringapi:
   # depends_on:
-  #   - dx-core
+  #   - core
 ```
 
 2. Update the `PORTAL_HOST` parameter values.
@@ -299,6 +299,8 @@ Windows:
 cd ./dx-docker-compose
 installApps.bat
 ```
+
+> **_NOTE:_** For any change in DX_HOSTNAME it's a must to re-execute installApps.sh / installApps.bat
 
 ### Connecting to your DX and applications.
 
