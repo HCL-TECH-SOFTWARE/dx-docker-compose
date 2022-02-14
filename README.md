@@ -17,7 +17,7 @@ All you need to do is to load the HCL DX docker images into your local docker re
 
 The load.sh script expects a path to a directory containing the docker image archives as a command line argument <docker-image-archives-directory>.
 
-**Note:** If you already loaded the DX docker images into a docker repository of your choice, you may skip executing `load.sh` or `load.bat`.
+> **_NOTE:_** If you already loaded the DX docker images into a docker repository of your choice, you may skip executing `load.sh` or `load.bat`.
 Please make sure to update the image names in the `dx.properties` file appropriately.
 
 Linux/MAC:
@@ -50,7 +50,7 @@ cd ./dx-docker-compose
 set.bat
 ```
 
-**Note:** The second command is **source ./set.sh** and not just executing set.sh directly.
+> **_NOTE:_** The second command is **source ./set.sh** and not just executing set.sh directly.
 
 If you want to unset your DX docker-compose environment, you can do so by running `unset.sh`:
 
@@ -79,7 +79,7 @@ To do so, remove the following lines from the docker-compose file:
       - ./volumes/core/wp_profile:/opt/HCL/wp_profile
 ```
 
-**Note:** By applying the above change, your any change you do in DX Core will only be persisted in the running Docker container. Your changes will be lost as soon as the container is stopped.
+> **_NOTE:_** By applying the above change, your any change you do in DX Core will only be persisted in the running Docker container. Your changes will be lost as soon as the container is stopped.
 
 ## Starting the environment
 
@@ -205,7 +205,7 @@ See below on how to bash into a docker-compose container.
 In the case that you already have a fully configured DX Core (e.g. an on premise installation) up and running, you can choose to configure docker-compose to connect to the on premise environment.
 The below mentioned changes in `dx.yaml` need to be applied to make this work.
 
-**Note:** You will also have to configure your DX Core environment to connect to the services running docker-compose (e.g. configuration of DAM and Content Composer portlets). Please have a look in the official HCL DX Help Center to understand which changes need to be done, if necessary.
+> **_NOTE:_** You will also have to configure your DX Core environment to connect to the services running docker-compose (e.g. configuration of DAM and Content Composer portlets). Please have a look in the official HCL DX Help Center to understand which changes need to be done, if necessary.
 
 Update the Ring API service configuration as described:
 
