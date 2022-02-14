@@ -57,6 +57,8 @@ services:
       - RING_API_PORT=3000
       - IMAGE_PROCESSOR_API_HOST=dx-image-processor
       - IMAGE_PROCESSOR_API_PORT=8080
+      - INTERNAL_BASE_API_HOST=dx-dam
+      - INTERNAL_BASE_API_PORT=3001
     ports:
       - "3000:3001"
     volumes:
@@ -68,7 +70,6 @@ services:
     image: ${DX_DOCKER_IMAGE_IMAGE_PROCESSOR:?'Missing docker image environment parameter'}
     environment:
       - DEBUG=*
-      - HOST=0.0.0.0
     ports:
       - "3500:8080"
     networks:
