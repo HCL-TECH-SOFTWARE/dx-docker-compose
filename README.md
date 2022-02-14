@@ -9,7 +9,7 @@ For installation instructions see: <https://docs.docker.com/compose/install/>
 
 ## Setup your environment
 
-Start by cloning this repository locally and cd into the `local-docker-compose` directory.
+Start by cloning this repository locally and cd into the `dx-docker-compose` directory.
 
 All you need to do is to load the HCL DX docker images into your local docker repository and set up your local environment with some environment variables.
 
@@ -23,14 +23,14 @@ Please make sure to update the image names in the `dx.properties` file appropria
 Linux/MAC:
 
 ```bash
-cd ./local-docker-compose
+cd ./dx-docker-compose
 bash load.sh <docker-image-archives-directory>
 ```
 
 Windows:
 
 ```bash
-cd ./local-docker-compose
+cd ./dx-docker-compose
 load.bat <docker-image-archives-directory>
 ```
 
@@ -39,14 +39,14 @@ load.bat <docker-image-archives-directory>
 Linux/MAC:
 
 ```bash
-cd ./local-docker-compose
+cd ./dx-docker-compose
 source ./set.sh
 ```
 
 Windows:
 
 ```bash
-cd ./local-docker-compose
+cd ./dx-docker-compose
 set.bat
 ```
 
@@ -57,14 +57,14 @@ If you want to unset your DX docker-compose environment, you can do so by runnin
 Linux/MAC:
 
 ```bash
-cd ./local-docker-compose
+cd ./dx-docker-compose
 source ./unset.sh
 ```
 
 Windows:
 
 ```bash
-cd ./local-docker-compose
+cd ./dx-docker-compose
 unset.bat
 ```
 
@@ -93,7 +93,7 @@ This will first of all pull all necessary docker images from artifactory (docker
 After a successful pull, all services defined in `dx.yaml` are being started and logging will directly go to your bash.
 You can stop docker-compose in this situation by pressing `CTRL+C`.
 
-If your user does not have permission to write to the persistent volumes location (folder `local-docker-compose/volumes`) specified in the docker-compose file dx.yaml, you will see errors and the system will not start properly. If necessary, change the permissions of this folder so that the user running the docker process can read and write to it.
+If your user does not have permission to write to the persistent volumes location (folder `dx-docker-compose/volumes`) specified in the docker-compose file dx.yaml, you will see errors and the system will not start properly. If necessary, change the permissions of this folder so that the user running the docker process can read and write to it.
 
 Here are some useful command line arguments to run `docker-compose up`:
 
@@ -289,14 +289,14 @@ To install CC, DAM and DXConnect applications in DX Core and to enable , you can
 Linux/MAC:
 
 ```bash
-cd ./local-docker-compose
+cd ./dx-docker-compose
 source ./installApps.sh
 ```
 
 Windows:
 
 ```bash
-cd ./local-docker-compose
+cd ./dx-docker-compose
 installApps.bat
 ```
 
