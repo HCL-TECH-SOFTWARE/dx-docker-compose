@@ -96,8 +96,6 @@ services:
       - "5500:3000"
     environment:
       - DEBUG=@site-manager/server:*
-      - PORTAL_PORT=80
-      - PORTAL_HOST=${DX_HOSTNAME:?'Please set hostname'}
       - WCMREST_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
       - WCMREST_API_PORT=80
     networks:
