@@ -100,8 +100,6 @@ services:
       - PORTAL_HOST=${DX_HOSTNAME:?'Please set hostname'}
       - WCMREST_API_HOST=${DX_HOSTNAME:?'Please set hostname'}
       - WCMREST_API_PORT=80
-      - RING_API_HOST=ringapi
-      - RING_API_PORT=3000
     networks:
       - default
   dam-db-node-0:
