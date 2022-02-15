@@ -79,7 +79,7 @@ To do so, remove the following lines from the docker-compose file:
       - ./volumes/core/wp_profile:/opt/HCL/wp_profile
 ```
 
-> **_NOTE:_** By applying the above change, your any change you do in DX Core will only be persisted in the running Docker container. Your changes will be lost as soon as the container is stopped.
+> **_NOTE:_** By applying the above change, any change you apply in DX Core will not be persisted. All your changes will be lost as soon as the container is stopped.
 
 ## Starting the environment
 
