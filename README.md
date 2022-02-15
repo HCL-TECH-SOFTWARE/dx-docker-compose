@@ -89,25 +89,15 @@ After setting your environment, you can start the DX docker-compose environment 
 docker-compose up
 ```
 
-This will first of all pull all necessary docker images from artifactory (docker image versions are defined in `set.sh`.
-After a successful pull, all services defined in `dx.yaml` are being started and logging will directly go to your bash.
+This will start all services defined in `dx.yaml` and logs will be printed directly go to your bash.
 You can stop docker-compose in this situation by pressing `CTRL+C`.
 
-If your user does not have permission to write to the persistent volumes location (folder `dx-docker-compose/volumes`) specified in the docker-compose file dx.yaml, you will see errors and the system will not start properly. If necessary, change the permissions of this folder so that the user running the docker process can read and write to it.
+If your user does not have permission to write to the persistent volumes location (folder `dx-docker-compose/volumes`) specified in the docker-compose file dx.yaml, you will see errors and the system will not start properly. If necessary, change the permissions of this folder so that the user running the docker process can read from and write to it.
 
 Here are some useful command line arguments to run `docker-compose up`:
 
 - `-d, --detach`: detached mode
 - `--remove-orphans`: this cleans up orphaned containers
-- `--scale SERVICE=NUM`: this lets you run multiple instances of a service (see further instructions below)
-
-The service configuration in `dx.yaml` supports up to 2 instances of DAM and up to 4 instances of the image processor. Upfront please adjust the ports section and set a port range for DAM and image processor inside of the `dx.yaml` file.
-
-To run them at full scale, you would run:
-
-```bash
-docker-compose up -d --scale dam=2 --scale image-processor=4
-```
 
 For more information on startup parameters for `docker-compose up`, please see <https://docs.docker.com/compose/reference/up/>.
 
@@ -191,13 +181,12 @@ hcl/dx/image-processor:v1.13.0_20211213-1446               "/home/dx_user/startâ
 ### Docker-compose services and load balancing
 
 The core of a docker-compose environment are its services.
-In the case of DX, each of our different components of DX (Core, CC, DAM, ...) is a individual docker-compose service.
+In the case of DX, each of the different DX components (Core, CC, DAM, ...) is a individual docker-compose service.
 The services are all described and configured in `dx.yaml`.
-Amongst other configurations, each service has a external port or a port range defined.
+Amongst other configurations, each service has a external port defined.
 
 Inside a docker-compose environment all containers of a particular service are reachable via their service name.
-If you e.g. connect into a docker container running in docker-compose, you'll be able to resolve the service name via dns.
-If you e.g. connect into the DAM service and then run `ping image-processor`(note that "image-processor" is the docker-compose service name) multiple times, then this will connect you randomly to all running image processor containers.
+If you connect into a docker container running in docker-compose, you'll be able to resolve the service name via dns. You could do so by just pinging the image processor (service name "image-processor") from any other container.
 See below on how to bash into a docker-compose container.
 
 ### Running DX docker-compose in a hybrid setup
