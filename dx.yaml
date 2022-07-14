@@ -174,5 +174,3 @@ services:
       - 80:8081
     networks:
       - default
-    depends_on:
-      - dam
