@@ -36,6 +36,7 @@ set listOfImages[5]=DX_DOCKER_IMAGE_RING_API:hcl-dx-ringapi
 set listOfImages[6]=DX_DOCKER_IMAGE_CORE:hcl-dx-core
 set listOfImages[7]=DX_DOCKER_IMAGE_DESIGN_STUDIO:hcl-dx-design-studio-image
 set listOfImages[8]=DX_DOCKER_IMAGE_HAPROXY:hcl-dx-haproxy-image
+set listOfImages[9]=DX_DOCKER_IMAGE_PREREQS_CHECKER:hcl-dx-prereqs-checker-image
 
 SET DX_DOCKER_IMAGE_CONTENT_COMPOSER=""
 SET DX_DOCKER_IMAGE_IMAGE_PROCESSOR=""
@@ -46,6 +47,7 @@ SET DX_DOCKER_IMAGE_RING_API=""
 SET DX_DOCKER_IMAGE_CORE=""
 SET DX_DOCKER_IMAGE_DESIGN_STUDIO=""
 SET DX_DOCKER_IMAGE_HAPROXY=""
+SET DX_DOCKER_IMAGE_PREREQS_CHECKER=""
 
     for /l %%i in (0,1,8) do ( 
         SET imageName=!listOfImages[%%i]!
@@ -66,6 +68,7 @@ SET DX_DOCKER_IMAGE_HAPROXY=""
                             IF %%a==DX_DOCKER_IMAGE_CORE SET DX_DOCKER_IMAGE_CORE=!imageNameTag:~14!
                             IF %%a==DX_DOCKER_IMAGE_DESIGN_STUDIO SET DX_DOCKER_IMAGE_DESIGN_STUDIO=!imageNameTag:~14!
                             IF %%a==DX_DOCKER_IMAGE_HAPROXY SET DX_DOCKER_IMAGE_HAPROXY=!imageNameTag:~14!
+                            IF %%a==DX_DOCKER_IMAGE_PREREQS_CHECKER SET DX_DOCKER_IMAGE_PREREQS_CHECKER=!imageNameTag:~14!
                         ) ELSE (
                             call echo "Error occured while loading %%b*.tar.gz file into docker"
                         )
@@ -104,6 +107,8 @@ IF %%m==DX_DOCKER_IMAGE_CONTENT_COMPOSER  (
     IF %DX_DOCKER_IMAGE_DESIGN_STUDIO%=="" ( echo %%m=%%n) ELSE ( echo %%m=%DX_DOCKER_IMAGE_DESIGN_STUDIO%)
 ) ELSE IF %%m==DX_DOCKER_IMAGE_HAPROXY (
     IF %DX_DOCKER_IMAGE_HAPROXY%=="" ( echo %%m=%%n) ELSE ( echo %%m=%DX_DOCKER_IMAGE_HAPROXY%)
+) ELSE IF %%m==DX_DOCKER_IMAGE_PREREQS_CHECKER (
+    IF %DX_DOCKER_IMAGE_PREREQS_CHECKER%=="" ( echo %%m=%%n) ELSE ( echo %%m=%DX_DOCKER_IMAGE_PREREQS_CHECKER%)
 ) else ( echo %%m)
 ))>result.properties
 DEL dx.properties

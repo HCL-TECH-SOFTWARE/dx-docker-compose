@@ -174,3 +174,12 @@ services:
       - 80:8081
     networks:
       - default
+  prereqs-checker:
+    image: ${DX_DOCKER_IMAGE_PREREQS_CHECKER:?'Missing docker image environment parameter'}
+    container_name: dx-prereqs-checker
+    volumes:
+      - 
+    ports:
+      - 80:8081
+    networks:
+      - default
