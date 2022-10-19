@@ -178,8 +178,8 @@ services:
     image: ${DX_DOCKER_IMAGE_PREREQS_CHECKER:?'Missing docker image environment parameter'}
     container_name: dx-prereqs-checker
     volumes:
-      - 
+      - ./volumes/core/wp_profile:/opt/HCL/wp_profile
     ports:
-      - 80:8081
+      - 8080:8083
     networks:
       - default
