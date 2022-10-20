@@ -177,9 +177,18 @@ services:
   prereqs-checker:
     image: ${DX_DOCKER_IMAGE_PREREQS_CHECKER:?'Missing docker image environment parameter'}
     container_name: dx-prereqs-checker
+    environment:
+      - CHECK_SCHEDULE=0 8 */1 * *
+      - THRESHOLD_LATENCY_MS=5
+      - THRESHOLD_RANDOM_READ_IOPS=1200
+      - THRESHOLD_RANDOM_WRITE_IOPS=700
+      - PERFORM_FILE_PERMISSION_CHECK=true
+      - PERFORM_SOFTLINK_HARDLINK_CHECK=true
     volumes:
-      - ./volumes/core/wp_profile:/opt/HCL/wp_profile
+      - ./volumes/core/wp_profile:/mnt/prereqs-checks-volumes/wp_profile
+      - ./volumes/dam/upload:/mnt/prereqs-checks-volumes/upload
+      - ./volumes/dam/db:/mnt/prereqs-checks-volumes/data
     ports:
-      - 8080:8083
+      - 81:8082
     networks:
       - default
