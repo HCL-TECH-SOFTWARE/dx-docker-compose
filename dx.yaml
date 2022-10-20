@@ -179,9 +179,9 @@ services:
     container_name: dx-prereqs-checker
     environment:
       - CHECK_SCHEDULE=0 8 * * *
-      - THRESHOLD_LATENCY_MS=5
-      - THRESHOLD_RANDOM_READ_IOPS=1200
-      - THRESHOLD_RANDOM_WRITE_IOPS=700
+      - THRESHOLD_LATENCY_MS=3
+      - THRESHOLD_RANDOM_READ_IOPS=1800
+      - THRESHOLD_RANDOM_WRITE_IOPS=600
       - PERFORM_FILE_PERMISSION_CHECK=true
       - PERFORM_SOFTLINK_HARDLINK_CHECK=true
     volumes:
