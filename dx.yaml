@@ -178,7 +178,7 @@ services:
     image: ${DX_DOCKER_IMAGE_PREREQS_CHECKER:?'Missing docker image environment parameter'}
     container_name: dx-prereqs-checker
     environment:
-      - CHECK_SCHEDULE=0 8 */1 * *
+      - CHECK_SCHEDULE=0 8 * * *
       - THRESHOLD_LATENCY_MS=5
       - THRESHOLD_RANDOM_READ_IOPS=1200
       - THRESHOLD_RANDOM_WRITE_IOPS=700
