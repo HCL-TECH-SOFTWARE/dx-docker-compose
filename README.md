@@ -318,3 +318,22 @@ To connect into a specific container of a service (if there is multiple containe
 ```bash
 docker exec -it dx_dam bash
 ```
+
+### Running Prerequisite Checks to your DX and applications.
+
+To perform checks to the mounted volumes, you can directly connect using the dx-prereqs-checker container
+
+```bash
+docker-compose exec prereqs-checker /bin/bash /usr/local/sbin/run_test.sh
+```
+
+To display the logs of the check results, run
+
+```bash
+docker-compose logs prereqs-checker
+```
+
+
+
+
+
