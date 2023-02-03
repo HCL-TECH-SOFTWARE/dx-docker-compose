@@ -58,7 +58,6 @@ listOfImages+=("DX_DOCKER_IMAGE_DATABASE_CONNECTION_POOL_DIGITAL_ASSET_MANAGER:h
 listOfImages+=("DX_DOCKER_IMAGE_DIGITAL_ASSET_MANAGER:hcl-dx-digital-asset-manager")
 listOfImages+=("DX_DOCKER_IMAGE_RING_API:hcl-dx-ringapi")
 listOfImages+=("DX_DOCKER_IMAGE_CORE:hcl-dx-core")
-listOfImages+=("DX_DOCKER_IMAGE_DESIGN_STUDIO:hcl-dx-design-studio-image")
 listOfImages+=("DX_DOCKER_IMAGE_HAPROXY:hcl-dx-haproxy-image")
 listOfImages+=("DX_DOCKER_IMAGE_PREREQS_CHECKER:hcl-prereqs-checker-image")
 
