@@ -59,7 +59,7 @@ listOfImages+=("DX_DOCKER_IMAGE_DIGITAL_ASSET_MANAGER:hcl-dx-digital-asset-manag
 listOfImages+=("DX_DOCKER_IMAGE_RING_API:hcl-dx-ringapi")
 listOfImages+=("DX_DOCKER_IMAGE_CORE:hcl-dx-core")
 listOfImages+=("DX_DOCKER_IMAGE_HAPROXY:hcl-dx-haproxy-image")
-listOfImages+=("DX_DOCKER_IMAGE_PREREQS_CHECKER:hcl-prereqs-checker-image")
+listOfImages+=("DX_DOCKER_IMAGE_PREREQS_CHECKER:hcl-dx-prereqs-checker-image")
 
 
 # Loop through the array to upload the docker image and update the properties file
