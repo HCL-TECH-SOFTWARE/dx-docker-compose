@@ -36,6 +36,8 @@ load.bat <docker-image-archives-directory>
 
 ### Set up local environment variables
 
+If the docker compose is not running on local, then DX_HOSTNAME value in set.sh/set.bat needs to be modified accordingly.
+
 Linux/MAC:
 
 ```bash
