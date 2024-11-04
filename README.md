@@ -372,5 +372,5 @@ Please check the course content:
 - Add shared libraries into folder `/opt/HCL/wp_profile/PortalServer/sharedLibrary/` of the dx-core container
 - In the Web-Browser:  
   - Access your Portal environment with URL: `http://<hostname>/wps/portal`.  
-  - Don't access the portal over the direct port! (for example: `https://localhost:10041/wps/portal`). If you do so, then you might not be able to access addons like the Content Composer or DAM. The whole communication works via the embeded http-proxy!  
+  - Don't access the portal over the direct port! (for example: `http://localhost:10039/wps/portal`). If you do so, then you might not be able to access addons like the Content Composer or DAM. The whole communication works via the embeded http-proxy!  
   - Don't access the portal server environment via https! The default configuration settings of docker-compose (dx.yaml) don't support SSL communication.  
