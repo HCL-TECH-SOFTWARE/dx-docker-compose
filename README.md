@@ -367,7 +367,7 @@ Please check the course content:
 - Always use `docker-compose up` command to start your environment
 - Make sure that the installApps.sh / installApps.bat script is already completed, before accessing the environment.
   Only then the additional extentions like Content Composer and DAM will be available!
-- Try to avoid using volumes (at best don't use volumes at all to get the best spead)
+- Try to avoid using volumes (at best don't use volumes at all to get the best speed)
 - Never restart the dx-core container (If needed, just stop/start the server directly in the dx-core container)
 - Add shared libraries into folder `/opt/HCL/wp_profile/PortalServer/sharedLibrary/` of the dx-core container
 - In the Web-Browser:  
