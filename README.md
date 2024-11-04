@@ -367,10 +367,10 @@ Please check the course content:
 - Always use `docker-compose up` command to start your environment
 - Make sure that the installApps.sh / installApps.bat script is already completed, before accessing the environment.
   Only then the additional extentions like Content Composer and DAM will be available!
-- try to avoid using volumes (at best don't use volumes at all to get the best spead)
-- never restart the dx-core container (If needed, just stop/start the server directly in the dx-core container)
-- add shared libraries into folder `/opt/HCL/wp_profile/PortalServer/sharedLibrary/` of the dx-core container
+- Try to avoid using volumes (at best don't use volumes at all to get the best spead)
+- Never restart the dx-core container (If needed, just stop/start the server directly in the dx-core container)
+- Add shared libraries into folder `/opt/HCL/wp_profile/PortalServer/sharedLibrary/` of the dx-core container
 - In the Web-Browser:  
-  - access your Portal environment with URL: `http://<hostname>/wps/portal`.  
+  - Access your Portal environment with URL: `http://<hostname>/wps/portal`.  
   - Don't access the portal over the direct port! (for example: `https://localhost:10041/wps/portal`). If you do so, then you might not be able to access addons like the Content Composer or DAM. The whole communication works via the embeded http-proxy!  
   - Don't access the portal server environment via https! The default configuration settings of docker-compose (dx.yaml) don't support SSL communication.  
