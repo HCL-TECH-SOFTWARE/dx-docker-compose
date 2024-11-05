@@ -200,7 +200,7 @@ After debugging is enabled you can use any IDE like Microsoft Visual Studio Code
 
 ### Adding Shared Libraries
 
-HCL highly recommand to add shared libraries in the folder `/opt/HCL/wp_profile/PortalServer/sharedLibrary/` of the dx-core container to avoid performance problems with shared libraries.  
+HCL highly recommends to add shared libraries in the folder `/opt/HCL/wp_profile/PortalServer/sharedLibrary/` of the dx-core container to avoid performance problems with shared libraries.  
 
 ### Docker-compose services and load balancing
 
@@ -368,9 +368,9 @@ Please check the course content:
 - Make sure that the installApps.sh / installApps.bat script is already completed, before accessing the environment.
   Only then the additional extentions like Content Composer and DAM will be available!
 - Try to avoid using volumes (at best don't use volumes at all to get the best speed)
-- Never restart the dx-core container (If needed, just stop/start the server directly in the dx-core container)
+- Avoid restarting the dx-core container for performance reasons (If needed, just stop/start the server directly in the dx-core container)
 - Add shared libraries into folder `/opt/HCL/wp_profile/PortalServer/sharedLibrary/` of the dx-core container
 - In the Web-Browser:  
   - Access your Portal environment with URL: `http://<hostname>/wps/portal`.  
   - Don't access the portal over the direct port! (for example: `http://localhost:10039/wps/portal`). If you do so, then you might not be able to access addons like the Content Composer or DAM. The whole communication works via the embeded http-proxy!  
-  - Don't access the portal server environment via https! The default configuration settings of docker-compose (dx.yaml) don't support SSL communication.  
+  - By default accessing the portal server environment via https is not configured out of the box. The default configuration settings of docker-compose (dx.yaml) don't support SSL communication.  
