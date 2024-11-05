@@ -15,9 +15,9 @@ All you need to do is to load the HCL DX docker images into your local docker re
 
 ### Loading DX docker images
 
-The load.sh script expects a path to a directory containing the docker image archives as a command line argument <docker-image-archives-directory>.
+The load.sh script expects a path to a directory containing the docker image archives as a command line argument.
 
-> **_NOTE:_** If you already loaded the DX docker images into a docker repository of your choice, you may skip executing `load.sh` or `load.bat`.
+**_NOTE:_** If you already loaded the DX docker images into a docker repository of your choice, you may skip executing `load.sh` or `load.bat`.
 Please make sure to update the image names in the `dx.properties` file appropriately.
 
 Linux/MAC:
@@ -69,19 +69,6 @@ Windows:
 cd ./dx-docker-compose
 unset.bat
 ```
-
-### Performance on Mac OS/Windows
-
-The performance for local docker volumes on Mac OS and Windows is quite slow.
-To improve especially the startup time of DX Core, you may choose to remove the persistent volume configuration.
-To do so, remove the following lines from the docker-compose file:
-
-```bash
-    volumes:
-      - ./volumes/core/wp_profile:/opt/HCL/wp_profile
-```
-
-> **_NOTE:_** By applying the above change, any change you apply in DX Core will not be persisted. All your changes will be lost as soon as the container is stopped.
 
 ## Starting the environment
 
@@ -178,6 +165,43 @@ hcl/dx/image-processor:v1.13.0_20211213-1446               "/home/dx_user/startâ
 
 ## Tips and tricks
 
+### Performance Tuning
+
+The performance for local docker volumes on some operating systems like Mac OS and Windows is quite slow.
+To improve especially the startup time of DX Core, you may choose to remove the persistent volume configuration.
+To do so, remove the following lines from the docker-compose file:
+
+```bash
+    volumes:
+      - ./volumes/core/wp_profile:/opt/HCL/wp_profile
+```
+
+> **_NOTE:_** When removing the volumes at all, any change you apply in DX Core will not be persisted. All your changes will be lost as soon as the container is stopped. If you need any specific folders or files been persistent, then please try to reduce it as much as possible. For example by just saving the server config of the WebSphere_Portal JVM to your local volume.  
+
+### Debugging WebSphere_Portal JVM on dx-core container
+
+It is possible to enable debugging mode on the WebSphere_Portal JVM to monitor/debug the whole server process.  
+For that, please make sure to enable port 7777 for the core service and in your firewall. Below you will find an example to expose that port 7777 in the dx.yaml file:  
+
+```bash  
+    services:  
+      core:  
+        container_name: dx-core  
+        image: ${DX_DOCKER_IMAGE_CORE:?'Missing docker image environment parameter'}  
+        ports:  
+          - "7777:7777"  
+```
+
+In addition to that it is needed to enable the WebSphere Application Server **debugging services** in the IBM Integrated Solutions Console (admin console). For details, please check: [Debugging Service details](https://www.ibm.com/docs/en/was/9.0.5?topic=applications-debugging-service-details)
+
+> **_NOTE:_** Make sure that the changes are persistent for the current dx-core container. A WebSphere_Portal server restart is needed, as soon as the debugging services are enabled!  
+
+After debugging is enabled you can use any IDE like Microsoft Visual Studio Code, Eclipse or IBM Rational Application Developer to connect to that remote debugging port. For details, please check: [HDX-DEV-300 HCL Digital Experience for Developers (Advanced)](https://hclsoftwareu.hcltechsw.com/courses/course/hdx-dev-300-dx-developer-advanced)  
+
+### Adding Shared Libraries
+
+HCL highly recommends to add shared libraries in the folder `/opt/HCL/wp_profile/PortalServer/sharedLibrary/` of the dx-core container to avoid performance problems with shared libraries.  
+
 ### Docker-compose services and load balancing
 
 The core of a docker-compose environment are its services.
@@ -200,42 +224,42 @@ Update the Ring API service configuration as described:
 
 1. Disable the `depends_on` parameter.
 
-```yaml
-ringapi:
-  # depends_on:
-  #   - core
-```
+    ```yaml
+    ringapi:
+      # depends_on:
+      #   - core
+    ```
 
 2. Update the `PORTAL_HOST` parameter values.
 
-```yaml
-environment:
-  - PORTAL_HOST=example.com
-```
-
-The result of the changes to the `ringapi` service should look similar to the snippet below:
-
-```yaml
-ringapi:
-  # depends_on:
-  #   - dx-core
-  image: ${DX_DOCKER_IMAGE_RINGAPI:?'Missing docker image environment parameter'}
+  ```yaml
   environment:
-    - DEBUG=ringapi-server:*
-    - PORTAL_PORT=10039
     - PORTAL_HOST=example.com
-  ports:
-    - "4000:3000"
-  networks:
-    - default
-```
+  ```
 
-Update the Content Composer service configuration as described:
+  The result of the changes to the `ringapi` service should look similar to the snippet below:
 
-```yaml
-environment:
-  - PORTAL_HOST=example.com
-```
+  ```yaml
+  ringapi:
+    # depends_on:
+    #   - dx-core
+    image: ${DX_DOCKER_IMAGE_RINGAPI:?'Missing docker image environment parameter'}
+    environment:
+      - DEBUG=ringapi-server:*
+      - PORTAL_PORT=10039
+      - PORTAL_HOST=example.com
+    ports:
+      - "4000:3000"
+    networks:
+      - default
+  ```
+
+  Update the Content Composer service configuration as described:
+
+  ```yaml
+  environment:
+    - PORTAL_HOST=example.com
+  ```
 
 ### Starting and stopping individual services
 
@@ -291,19 +315,19 @@ installApps.bat
 
 > **_NOTE:_** For any change in DX_HOSTNAME it's a must to re-execute installApps.sh / installApps.bat
 
-### Connecting to your DX and applications.
+### Connecting to your DX and applications
 
 To access your dx environment, navigate to _http://<PORTAL_HOST>/wps/portal_
 
-Example: http://example.com/wps/portal
+Example: `http://example.com/wps/portal`
 
 To access dx admin console, navigate to _https://<PORTAL_HOST>:10041/ibm/console_
 
-Example: https://example.com:10041/ibm/console
+Example: `https://example.com:10041/ibm/console`
 
 To access the ConfigWizard Server Admin console _https://<PORTAL_HOST>:10203/ibm/console_
 
-Example: https://example.com:10203/ibm/console
+Example: `https://example.com:10203/ibm/console`
 
 ### Connecting into a docker-compose service via bash
 
@@ -319,7 +343,7 @@ To connect into a specific container of a service (if there is multiple containe
 docker exec -it dx_dam bash
 ```
 
-### Running Prerequisite Checks to your DX and applications.
+### Running Prerequisite Checks to your DX and applications
 
 To perform checks to the mounted volumes, you can directly connect using the dx-prereqs-checker container
 
@@ -333,7 +357,20 @@ To display the logs of the check results, run
 docker-compose logs prereqs-checker
 ```
 
+### DX Development with Visual Studio Code & Docker-Compose  
 
+Please check the course content:  
+[HDX-DEV-300 HCL Digital Experience for Developers (Advanced)](https://hclsoftwareu.hcltechsw.com/courses/course/hdx-dev-300-dx-developer-advanced)  
 
+### Best practice  
 
-
+- Always use `docker-compose up` command to start your environment
+- Make sure that the installApps.sh / installApps.bat script is already completed, before accessing the environment.
+  Only then the additional extentions like Content Composer and DAM will be available!
+- Try to avoid using volumes (at best don't use volumes at all to get the best speed)
+- Avoid restarting the dx-core container for performance reasons (If needed, just stop/start the server directly in the dx-core container)
+- Add shared libraries into folder `/opt/HCL/wp_profile/PortalServer/sharedLibrary/` of the dx-core container
+- In the Web-Browser:  
+  - Access your Portal environment with URL: `http://<hostname>/wps/portal`.  
+  - Don't access the portal over the direct port! (for example: `http://localhost:10039/wps/portal`). If you do so, then you might not be able to access addons like the Content Composer or DAM. The whole communication works via the embeded http-proxy!  
+  - By default accessing the portal server environment via https is not configured out of the box. The default configuration settings of docker-compose (dx.yaml) don't support SSL communication.  
