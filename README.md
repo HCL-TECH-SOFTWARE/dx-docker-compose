@@ -389,7 +389,7 @@ Please check the course content:
     Linux/Mac:
 
     ```bash
-        create_certificates.bat  
+        ./create_certificates.sh  
     ```
 
 2. Change the haproxy.cfg file as following:
