@@ -373,4 +373,99 @@ Please check the course content:
 - In the Web-Browser:  
   - Access your Portal environment with URL: `http://<hostname>/wps/portal`.  
   - Don't access the portal over the direct port! (for example: `http://localhost:10039/wps/portal`). If you do so, then you might not be able to access addons like the Content Composer or DAM. The whole communication works via the embeded http-proxy!  
-  - By default accessing the portal server environment via https is not configured out of the box. The default configuration settings of docker-compose (dx.yaml) don't support SSL communication.  
+  - By default accessing the portal server environment via https is not configured out of the box. Additional steps need to be done to enable SSL.
+
+## Enabling Secured Socket Layer (SSL )
+
+### Prerequisites
+
+OpenSSL need to be installed, if own self-signed certificates will be used.
+Installation instructions can be found at [Install openSSL](https://github.com/openssl/openssl/blob/master/INSTALL.md#installing-openssl).  
+
+> **_NOTE:_**  
+The **ssl** folder contains a localhost.pem file that can be used with the haproxy service running on a local environment. The certificate is created for the hostname localhost and it never expires. Please modify the create_certificates scripts for your needs, if you want to use your own certificates.
+
+### Instructions
+
+1. Create own self signed certificates  
+   Navigate to the **ssl** folder and execute the create_certificates script  
+
+    Windows:  
+
+    ```bash
+        create_certificates.bat  
+    ```
+
+    Linux/Mac:
+
+    ```bash
+        ./create_certificates.sh  
+    ```
+
+2. Change the haproxy.cfg file the following section:
+
+      ```yaml
+        frontend dx
+        bind :8081
+      ```  
+
+   to use:
+
+      ```yaml
+        frontend dx
+        mode http
+        bind :8083 ssl crt /etc/ssl/private/localhost.pem 
+        bind :8081
+        http-request redirect scheme https unless { ssl_fc }
+      ```
+
+    > **_NOTE:_**  
+    The parameter: `http-request redirect scheme https unless { ssl_fc }` automatically redirects http requests into https. It can be removed, if you want to allow http requests as well.  
+
+3. Modify the dx.yaml and change the haproxy service from:
+
+   ```yaml
+   haproxy:
+     image: ${DX_DOCKER_IMAGE_HAPROXY:?'Missing docker image environment parameter'}
+     container_name: dx-haproxy
+     volumes:
+       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+     ports:
+       - 80:8081
+     networks:
+       - default
+   ```
+
+    to:  
+
+    ```yaml
+    haproxy:
+      image: ${DX_DOCKER_IMAGE_HAPROXY:?'Missing docker image environment parameter'}
+      container_name: dx-haproxy
+      volumes:
+        - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+        - ./ssl/localhost.pem:/etc/ssl/private/localhost.pem      
+      ports:
+        - 80:8081
+        - 443:8083
+      networks:
+        - default        
+      ```  
+
+4. Run `docker-compose up` to start the environment
+
+5. Install or update CC, DAM and DXConnect applications in DX Core to use SSL
+
+      Linux/MAC:
+
+      ```bash
+      ./installApps_SSL_Enabled.sh
+      ```
+
+      Windows:
+
+      ```bash
+      installApps_SSL_Enabled.bat
+      ```
+
+6. Restart the dx-core container  
