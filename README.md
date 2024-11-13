@@ -377,6 +377,9 @@ Please check the course content:
 
 ## Enable SSL  
 
+> **_NOTE:_**  
+The **ssl** folder contains a localhost.pem file that can be used with the haproxy service running on a local environment. The certificate is created for the hostname localhost and it never expires. Please modify the create_certificates scripts for your needs.
+
 1. Create own self signed certificates  
    Navigate to the **ssl** folder and execute the create_certificates script  
 
@@ -392,7 +395,14 @@ Please check the course content:
         ./create_certificates.sh  
     ```
 
-2. Change the haproxy.cfg file as following:
+2. Change the haproxy.cfg file the following section:
+
+      ```yaml
+        frontend dx
+        bind :8081
+      ```  
+
+   to use:
 
       ```yaml
         frontend dx
@@ -402,18 +412,34 @@ Please check the course content:
         http-request redirect scheme https unless { ssl_fc }
       ```
 
-3. Modify the dx.yaml as following:  
+3. Modify the dx.yaml and change the haproxy service from:
 
-      ```yaml
-        haproxy:
-        image: ${DX_DOCKER_IMAGE_HAPROXY:?'Missing docker image environment parameter'}
-        container_name: dx-haproxy
-        volumes:
-          - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
-          - ./ssl/localhost.pem:/etc/ssl/private/localhost.pem      
-        ports:
-          - 80:8081
-          - 443:8083
+   ```yaml
+   haproxy:
+     image: ${DX_DOCKER_IMAGE_HAPROXY:?'Missing docker image environment parameter'}
+     container_name: dx-haproxy
+     volumes:
+       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+     ports:
+       - 80:8081
+     networks:
+       - default
+   ```
+
+    to:  
+
+    ```yaml
+    haproxy:
+      image: ${DX_DOCKER_IMAGE_HAPROXY:?'Missing docker image environment parameter'}
+      container_name: dx-haproxy
+      volumes:
+        - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+        - ./ssl/localhost.pem:/etc/ssl/private/localhost.pem      
+      ports:
+        - 80:8081
+        - 443:8083
+      networks:
+        - default        
       ```  
 
 4. Run `docker-compose up` to start the environment
@@ -431,3 +457,5 @@ Please check the course content:
       ```bash
       installApps_SSL_Enabled.bat
       ```
+
+6. Restart the dx-core container  
