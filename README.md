@@ -412,6 +412,9 @@ The **ssl** folder contains a localhost.pem file that can be used with the hapro
         http-request redirect scheme https unless { ssl_fc }
       ```
 
+    > **_NOTE:_**  
+    The parameter: `http-request redirect scheme https unless { ssl_fc }` automatically redirects http requests into https. It can be removed, if you want to allow http requests as well.  
+
 3. Modify the dx.yaml and change the haproxy service from:
 
    ```yaml
