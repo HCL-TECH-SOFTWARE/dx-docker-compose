@@ -375,10 +375,17 @@ Please check the course content:
   - Don't access the portal over the direct port! (for example: `http://localhost:10039/wps/portal`). If you do so, then you might not be able to access addons like the Content Composer or DAM. The whole communication works via the embeded http-proxy!  
   - By default accessing the portal server environment via https is not configured out of the box. Additional steps need to be done to enable SSL.
 
-## Enable SSL  
+## Enabling Secured Socket Layer (SSL )
+
+### Prerequisites
+
+OpenSSL need to be installed, if own self-signed certificates will be used.
+Installation instructions can be found at [Install openSSL](https://github.com/openssl/openssl/blob/master/INSTALL.md#installing-openssl).  
 
 > **_NOTE:_**  
-The **ssl** folder contains a localhost.pem file that can be used with the haproxy service running on a local environment. The certificate is created for the hostname localhost and it never expires. Please modify the create_certificates scripts for your needs.
+The **ssl** folder contains a localhost.pem file that can be used with the haproxy service running on a local environment. The certificate is created for the hostname localhost and it never expires. Please modify the create_certificates scripts for your needs, if you want to use your own certificates.
+
+### Instructions
 
 1. Create own self signed certificates  
    Navigate to the **ssl** folder and execute the create_certificates script  
