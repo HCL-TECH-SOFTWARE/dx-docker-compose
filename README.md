@@ -402,25 +402,46 @@ The **ssl** folder contains a localhost.pem file that can be used with the hapro
         ./create_certificates.sh  
     ```
 
-2. Change the haproxy.cfg file the following section:
+2. Change the haproxy.cfg file in the following section:
 
       ```yaml
         frontend dx
-        bind :8081
+          bind :8081
+
+          use_backend dam if { path -m reg ^/dx/(api|ui)/dam/ }
+          use_backend content if { path_beg /dx/ui/content/ }
+          use_backend image-processor if { path_beg /dx/api/image-processor/ }
+          use_backend ring-api if { path_beg /dx/api/core/ }
+
+          default_backend core-dx-home
+
+        backend core-dx-home
+          server core dx-core:10039 check resolvers nameserver init-addr none
       ```  
 
    to use:
 
       ```yaml
-        frontend dx
-        mode http
-        bind :8083 ssl crt /etc/ssl/private/localhost.pem 
-        bind :8081
-        http-request redirect scheme https unless { ssl_fc }
-      ```
+        frontend dx  
+          #BIND SSL and HTTP PORT
+          bind :8083 ssl crt /etc/ssl/private/localhost.pem  
+          bind :8081
 
-    > **_NOTE:_**  
-    The parameter: `http-request redirect scheme https unless { ssl_fc }` automatically redirects http requests into https. It can be removed, if you want to allow http requests as well.  
+          use_backend dam if { path -m reg ^/dx/(api|ui)/dam/ }
+          use_backend content if { path_beg /dx/ui/content/ }
+          use_backend image-processor if { path_beg /dx/api/image-processor/ }
+          use_backend ring-api if { path_beg /dx/api/core/ }
+
+          #DEFAULT BACKEND CONNECTS OVER HTTPS
+          default_backend core-dx-home-ssl
+
+        backend core-dx-home
+          server core dx-core:10039 check resolvers nameserver init-addr none
+
+
+        backend core-dx-home-ssl 
+          server core dx-core:10041 check resolvers nameserver init-addr none ssl verify none
+      ```
 
 3. Modify the dx.yaml and change the haproxy service from:
 
