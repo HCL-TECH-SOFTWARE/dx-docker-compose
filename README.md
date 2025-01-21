@@ -490,3 +490,5 @@ The **ssl** folder contains a localhost.pem file that can be used with the hapro
       ```
 
 6. Restart the dx-core container  
+
+7. Thanks
