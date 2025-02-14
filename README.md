@@ -1,4 +1,4 @@
-# HCL DX docker-compose
+# HCL DX Compose docker-compose
 
 This little scripting enables you to run a fully fledged DX environment with minimal footprint on your local machine.
 It uses docker-compose to start/stop and manage Docker containers.
