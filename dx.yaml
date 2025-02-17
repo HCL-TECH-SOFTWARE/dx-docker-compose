@@ -180,3 +180,36 @@ services:
       - 81:8082
     networks:
       - default
+  peopleservice:
+    image: ${DX_DOCKER_IMAGE_PEOPLE_SERVICE:?'Missing docker image environment parameter'}
+    container_name: dx-peopleservice
+    hostname: dx-peopleservice  
+    depends_on:
+      dam-db-pool:
+        condition: service_healthy
+    environment:
+      - PORT=7001
+      - PORT_v1=7001
+      - CLIENT_HOST=${DX_HOSTNAME:?'Please set hostname'}
+      - CLIENT_PORT=80
+      - RING_API_HOST=dx-ringapi
+      - RING_API_PORT=3000
+      - CLIENT_CONTEXT=/dx/ui/people
+      - API_SERVICE_CONTEXT=/dx/api/people/v1
+      - DX_PORTLET_PAGE_CONTEXT=/wps/myportal/Practitioner/PeopleService
+      - PG_HOST=dx-dam-db-pool
+      - PG_PORT=5432
+      - PG_USERNAME=dxuser
+      - PG_PASSWORD=d1gitalExperience
+      - DX_INTEGRATION_ENABLED=true
+      - AUTH_STRATEGY=DX
+      - USER_ROLE_STRATEGY=DX
+      - DX_SESSION_COOKIE_NAME=JSESSIONID
+      - JWT_TOKEN_EXPIRY=60000
+      - DEBUG=INFO:people-service:*
+    volumes:
+      - ./volumes/people/:/data/people/
+    ports:
+      - 7001:7001
+    networks:
+      - default

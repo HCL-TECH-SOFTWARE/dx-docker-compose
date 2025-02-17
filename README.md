@@ -131,14 +131,16 @@ Example output:
 ```bash
 
 NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O         PIDS
-dx-haproxy           0.00%     7.008MiB / 31.21GiB   0.02%     11.1MB / 10.8MB   0B / 0B           9
-dx-dam               0.27%     493.4MiB / 31.21GiB   1.54%     263MB / 381MB     8.19kB / 19.5kB   78
-dx-dam-db-pool       0.05%     116.8MiB / 31.21GiB   0.37%     586MB / 659MB     0B / 1.44MB       36
-dx-ringapi           0.17%     104.2MiB / 31.21GiB   0.33%     1.45MB / 1.2MB    0B / 24.1kB       23
-dx-dam-db-node-0     0.07%     63.26MiB / 31.21GiB   0.20%     414MB / 233MB     0B / 15.6MB       14
-dx-core              0.80%     2.137GiB / 31.21GiB   6.85%     1.62MB / 6.71MB   436MB / 563MB     375
-dx-cc                0.19%     71.73MiB / 31.21GiB   0.22%     7.7kB / 0B        0B / 11.3kB       23
-dx-image-processor   0.17%     426.3MiB / 31.21GiB   1.33%     17.5MB / 4.27MB   0B / 23kB         23
+dx-haproxy           1.46%     30.3MiB / 11.67GiB    0.25%     73.6kB / 136kB    0B / 8.19kB       8
+dx-peopleservice     0.00%     131.5MiB / 11.67GiB   1.10%     436kB / 655kB     0B / 12.1MB       24
+dx-cc                1.59%     147.6MiB / 11.67GiB   1.24%     408kB / 70.4kB    51.7MB / 8.19kB   23
+dx-dam               5.54%     589.4MiB / 11.67GiB   4.93%     1.65MB / 1.49MB   26.1MB / 8.19kB   78
+dx-ringapi           1.45%     174.5MiB / 11.67GiB   1.46%     416kB / 2.15MB    56.3MB / 8.19kB   23
+dx-dam-db-pool       53.55%    335MiB / 11.67GiB     2.80%     2.66MB / 3.14MB   12.7MB / 1.78MB   38
+dx-prereqs-checker   4.12%     23.98MiB / 11.67GiB   0.20%     4.65kB / 0B       11.5MB / 4.1kB    11
+dx-image-processor   1.31%     201.4MiB / 11.67GiB   1.69%     419kB / 79.4kB    86.8MB / 8.19kB   23
+dx-core              330.29%   1.744GiB / 11.67GiB   14.94%    113kB / 66.6kB    393MB / 253MB     315
+dx-dam-db-node-0     34.21%    388.4MiB / 11.67GiB   3.25%     1.79MB / 1.19MB   6.26MB / 160kB    48
 
 ```
 
@@ -151,15 +153,17 @@ docker-compose ps
 Example output:
 
 ```bash
-IMAGE                                                      COMMAND                  CREATED      STATUS                PORTS                                                                                                                                                                                                                                                                                                                                                                                                                      NAMES
-hcl/dx/haproxy:v1.0.0_20220713-0158                        "/bin/bash entrypoin…"   3 days ago   Up 3 days             0.0.0.0:80->80/tcp, :::80->80/tcp, 0.0.0.0:443->443/tcp, :::443->443/tcp                                                                                                                                                                                                                                                                                                                                                   dx-haproxy
-hcl/dx/digital-asset-manager:v1.12.0_20211213-1448         "/bin/bash entrypoin…"   3 days ago   Up 3 days             0.0.0.0:80->8081/tcp, :::80->8081/tcp                                                                                                                                                                                                                                                                                                                                                                                      dx-dam
-hcl/dx/persistence-connection-pool:v1.13.0_20211213-1457   "/scripts/entrypoint…"   3 days ago   Up 3 days (healthy)   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp                                                                                                                                                                                                                                                                                                                                                                                  dx-dam-db-pool
-hcl/dx/ringapi:v1.13.0_20211213-1457                       "/opt/app/start_all_…"   3 days ago   Up 3 days             0.0.0.0:4000->3000/tcp, :::4000->3000/tcp                                                                                                                                                                                                                                                                                                                                                                                  dx-ringapi
-hcl/dx/persistence-node:v1.3_20211213-1454                 "/start_postgres.sh"     3 days ago   Up 3 days (healthy)   0.0.0.0:5433->5432/tcp, :::5433->5432/tcp                                                                                                                                                                                                                                                                                                                                                                                  dx-dam-db-node-0
-hcl/dx/core:v95_CF200_20211213-1442                        "sh -c /opt/app/entr…"   3 days ago   Up 3 days             0.0.0.0:7777->7777/tcp, :::7777->7777/tcp, 0.0.0.0:10020->10020/tcp, :::10020->10020/tcp, 10032/tcp, 0.0.0.0:10033->10033/tcp, :::10033->10033/tcp, 10034-10038/tcp, 0.0.0.0:10039->10039/tcp, :::10039->10039/tcp, 10040/tcp, 0.0.0.0:10041->10041/tcp, :::10041->10041/tcp, 10042/tcp, 0.0.0.0:10200->10200/tcp, :::10200->10200/tcp, 0.0.0.0:10202-10203->10202-10203/tcp, :::10202-10203->10202-10203/tcp, 10201/tcp   dx-core
-hcl/dx/content-composer:v1.13.0_20211213-1443              "/opt/app/start_all_…"   3 days ago   Up 3 days             0.0.0.0:5000->3000/tcp, :::5000->3000/tcp                                                                                                                                                                                                                                                                                                                                                                                  dx-cc
-hcl/dx/image-processor:v1.13.0_20211213-1446               "/home/dx_user/start…"   3 days ago   Up 3 days             0.0.0.0:3500->8080/tcp, :::3500->8080/tcp                                                                                                                                                                                                                                                                                                                                                                                  dx-image-processor
+IMAGE                                                           COMMAND                  CREATED          STATUS                    PORTS                                                                                                                                                                                                                                                         NAMES
+hclcr.io/dx/haproxy:v1.20.0_20241210-2256                       "/bin/bash entrypoin…"   5 minutes ago    Up 4 minutes              0.0.0.0:80->8081/tcp                                                                                                                                                                                                                                          dx-haproxy
+hclcr.io/dx/people-service:v1.0.0_20241210-2231                 "/home/dx_user/entry…"   8 minutes ago    Up 8 minutes              3000/tcp, 0.0.0.0:7001->7001/tcp                                                                                                                                                                                                                              dx-peopleservice
+hclcr.io/dx/content-composer:v1.37.0_20241210-2230              "/opt/app/start_all_…"   17 minutes ago   Up 17 minutes             0.0.0.0:5001->3000/tcp                                                                                                                                                                                                                                        dx-cc
+hclcr.io/dx/digital-asset-manager:v1.36.0_20241210-2303         "/opt/app/start_all_…"   20 minutes ago   Up 17 minutes             0.0.0.0:3000->3001/tcp                                                                                                                                                                                                                                        dx-dam
+hclcr.io/dx/ringapi:v1.37.0_20241210-2252                       "/opt/app/start_all_…"   20 minutes ago   Up 17 minutes             0.0.0.0:4000->3000/tcp                                                                                                                                                                                                                                        dx-ringapi
+hclcr.io/dx/persistence-connection-pool:v1.34.0_20241210-2254   "/scripts/entrypoint…"   20 minutes ago   Up 17 minutes (healthy)   0.0.0.0:5432->5432/tcp                                                                                                                                                                                                                                        dx-dam-db-pool
+hclcr.io/dx/prereqs-checker:v1.0.0_20241210-2243                "/bin/bash set_cronj…"   20 minutes ago   Up 20 minutes             0.0.0.0:81->8082/tcp                                                                                                                                                                                                                                          dx-prereqs-checker
+hclcr.io/dx/image-processor:v1.37.0_20241210-2258               "/home/dx_user/start…"   20 minutes ago   Up 20 minutes             0.0.0.0:3500->8080/tcp                                                                                                                                                                                                                                        dx-image-processor
+hclcr.io/dx/core:v95_CF224_20241210-2319                        "sh -c /opt/app/entr…"   20 minutes ago   Up 20 minutes             0.0.0.0:7777->7777/tcp, 0.0.0.0:10020->10020/tcp, 10032/tcp, 0.0.0.0:10033->10033/tcp, 10034-10038/tcp, 0.0.0.0:10039->10039/tcp, 10040/tcp, 0.0.0.0:10041->10041/tcp, 10042/tcp, 0.0.0.0:10200->10200/tcp, 0.0.0.0:10202-10203->10202-10203/tcp, 10201/tcp   dx-core
+hclcr.io/dx/persistence-node:v1.24_20241210-2252                "/start_postgres.sh"     20 minutes ago   Up 17 minutes (healthy)   0.0.0.0:5433->5432/tcp                                                                                                                                                                                                                                        dx-dam-db-node-0
 
 ```
 
@@ -471,7 +475,7 @@ The **ssl** folder contains a localhost.pem file that can be used with the hapro
         - 443:8083
       networks:
         - default        
-      ```  
+      ```
 
 4. Run `docker-compose up` to start the environment
 
