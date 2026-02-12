@@ -9,7 +9,7 @@ For installation instructions see: <https://docs.docker.com/compose/install/>
 
 ## Setup your environment
 
-Start by cloning this repository locally and cd into the `dx-docker-compose` directory.
+Start by cloning this repository locally and cd into the `dx-docker-compose` directory. Then update the dx.properties files to point it to the version of DX you want to deploy.
 
 All you need to do is to load the HCL DX docker images into your local docker repository and set up your local environment with some environment variables.
 
