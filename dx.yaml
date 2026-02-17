@@ -11,15 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-version: "3.8"
-
 services:
   core:
     container_name: dx-core
     image: ${DX_DOCKER_IMAGE_CORE:?'Missing docker image environment parameter'}
     volumes:
-      - ./volumes/core/wp_profile:/opt/HCL/wp_profile
+      - ./volumes/core/wp_profile/logs:/opt/HCL/wp_profile/logs
+      - ./volumes/core/cw_profile/logs:/opt/HCL/AppServer/profiles/cw_profile/logs
     ports:
       - "7777:7777"
       - "10020:10020"
@@ -99,7 +97,7 @@ services:
     container_name: dx-dam-db-node-0
     hostname: dx-dam-db-node-0
     image: ${DX_DOCKER_IMAGE_DAM_DB_NODE:?'Missing docker image environment parameter'}
-    environment:
+    environment:      
       - POSTGRES_DB=dxmediadb
       - POSTGRES_USER=dxuser
       - POSTGRES_PASSWORD=d1gitalExperience
@@ -113,14 +111,16 @@ services:
       - REPMGR_PARTNER_NODES=dx-dam-db-node-0;
       - SYNCHRONOUS_COMMIT=off
       # The synchronous standby names value should be updated to "1 (*)" if the number of DB nodes is 2
-      - SYNCHRONOUS_STANDBY_NAMES=
+      - SYNCHRONOUS_STANDBY_NAMES=*
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 30s
-      timeout: 30s
+      interval: 60s
+      timeout: 360s
       retries: 3
     ports:
       - "5433:5432"
+    # It is noticed on Microsoft Windows that the persistence of the postgress DB data may cause performance issues during the first container startup. 
+    # To get a better performance it might be needed to remove that volume and to keep then the DAM-DB data just running inside of the container.     
     volumes:
       - ./volumes/dam/db:/var/lib/pgsql/11/data
     networks:
@@ -143,6 +143,7 @@ services:
       - PGPOOL_ENABLE_LOAD_BALANCING=yes
       - PGPOOL_POSTGRES_CUSTOM_USERS=damuser
       - PGPOOL_POSTGRES_CUSTOM_PASSWORDS=1234
+      - NEW_DB_MANAGEMENT=false
     networks:
       - default
     depends_on:
