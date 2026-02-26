@@ -490,3 +490,48 @@ The **ssl** folder contains a localhost.pem file that can be used with the hapro
       ```
 
 6. Restart the dx-core container  
+
+## Instructions to load HCL DX Container images from HCL Harbor
+
+### Microsoft Windows
+
+It is possible to load **the latest** HCL DX-Docker-Compose container images from [HCL Harbor](https://hclcr.io/account/sign-in) using the **loadFromHarbor.bat** script.  
+
+#### Tool Prerequisites
+
+To get that script working correctly it requires to download and install **jq-windows-amd64.exe** from the web-page [Download jq](https://jqlang.org/download/).
+The jq-windows-amd64.exe file needs to be added to your Windows user environment variable path settings and/or located inside of this git-repository to run that loadFromHarbor.bat script correctly. The script require the HCL Harbor **user-id** and **CLI secrete** to get the container images downloaded and pulled to your docker runtime.  
+
+**Note:** The script will also automatically update your dx.properties file to match the latest container image-tags.
+
+General usage:
+
+1. Ensure that the dx.properties file just contain the variable-names and **no values** of it.
+For example:
+
+    DX_DOCKER_IMAGE_CONTENT_COMPOSER=
+    DX_DOCKER_IMAGE_CORE=
+    DX_DOCKER_IMAGE_DIGITAL_ASSET_MANAGER=
+    DX_DOCKER_IMAGE_DATABASE_NODE_DIGITAL_ASSET_MANAGER=
+    DX_DOCKER_IMAGE_DATABASE_CONNECTION_POOL_DIGITAL_ASSET_MANAGER=
+    DX_DOCKER_IMAGE_IMAGE_PROCESSOR=
+    DX_DOCKER_IMAGE_RING_API=
+    DX_DOCKER_IMAGE_HAPROXY=
+    DX_DOCKER_IMAGE_PREREQS_CHECKER=
+
+2. start the **loadFromHarbor.bat** script
+
+3. Enter your HCL Harbor **user-id** and **CLI secrete**.
+   The HCL DX container-images then should be automatically pulled to your local docker-registry.
+
+4. Run the `set.bat` script.
+
+5. start the environment with the following command:  
+
+    ```bash
+    docker-compose up -d
+    ```
+
+## Linux / Unix
+
+The script is not present yet. It might be added in the future. Stay tuned.  
