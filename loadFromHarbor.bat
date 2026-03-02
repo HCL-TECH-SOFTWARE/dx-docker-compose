@@ -1,9 +1,11 @@
 @echo off
+echo Download HCL DX container images from HCL Harbor...
 echo Please enter your HCL Harbor login username/id:
 set /p inputUsername=
 echo Please enter your HCL Harbor CLI secrete:
 set /p inputPassword=
-call helm registry login -u %inputUsername% -p %inputPassword% https://hclcr.io/
+echo Logging in into HCL Harbor...
+call docker login --username %inputUsername% --password %inputPassword% https://hclcr.io/
 echo Creating harbor directory, if it does not exist...
 if not exist ./harbor md harbor
 echo ------------------------------------------------
