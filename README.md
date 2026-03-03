@@ -493,15 +493,15 @@ The **ssl** folder contains a localhost.pem file that can be used with the hapro
 
 ## Instructions to load HCL DX Container images from HCL Harbor
 
-It is possible to load **the latest** HCL DX-Docker-Compose container images from [HCL Harbor](https://hclcr.io/account/sign-in) using the **loadFromHarbor.bat** (for Microsoft Windows) or **loadFraomHarboer.sh** script for running on Apple Macintosh or any Unix/Linux environment.  
+It is possible to load **the latest** HCL DX-Docker-Compose container images from [HCL Harbor](https://hclcr.io/account/sign-in) using the **loadFromHarbor.bat** (for Microsoft Windows) or **loadFromHarbor.sh** script when running on Apple Macintosh or any Unix/Linux environment.  
 
-#### Tool Prerequisites
+### Harbor Prerequisites
 
-To get that script working correctly it requires to download and install the jq-parser. (**jq-windows-amd64.exe** for Microsoft Windows or **jq** for Mac and Linux from the web-page [Download jq](https://jqlang.org/download/). The jq-windows-amd64.exe file needs to be added to your Windows user environment variable path settings and/or located inside of this git-repository to run that loadFromHarbor.bat script correctly. The script require the HCL Harbor **user-id** and **CLI secrete** to get the container images downloaded and pulled to your docker runtime.  
+To get that scripts working correctly it requires to download and install the jq-parser (**jq-windows-amd64.exe** for Microsoft Windows or **jq** for Apple Macintosh and Unix/Linux environments) from the web-page [Download jq](https://jqlang.org/download/). That additional tool will be used to extract the image-tags. The jq-windows-amd64.exe file needs to be added to your Windows user environment variable path settings and/or located inside of this git-repository to run that loadFromHarbor.bat script correctly. The script requires the HCL Harbor **user-id** and **CLI secrete** to get the container images downloaded and pulled to your local docker runtime.  
 
 **Note:** The scripts will also automatically update your dx.properties file to match the latest container image-tags.
 
-General usage:
+### General usage
 
 1. Ensure that the dx.properties file just contain the variable-names and **no values** of it.
 For example:
@@ -516,12 +516,12 @@ For example:
     DX_DOCKER_IMAGE_HAPROXY=
     DX_DOCKER_IMAGE_PREREQS_CHECKER=
 
-2. start the **loadFromHarbor.bat** or **./loadFromHarbor.sh** script
+2. start the **loadFromHarbor.bat** or **./loadFromHarbor.sh** script.
 
 3. Enter your HCL Harbor **user-id** and **CLI secrete**.
    The HCL DX container-images then should be automatically pulled to your local docker-registry.
 
-4. Run the `set.bat`or `./set.sh` script.
+4. Run the `set.bat`or `set.sh` script to set the environment variables.
 
 5. start the environment with the following command:  
 
