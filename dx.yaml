@@ -1,4 +1,4 @@
-# Copyright 2021, 2023 HCL Technologies
+# Copyright 2021, 2026 HCL Technologies
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -116,7 +116,7 @@ services:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 60s
       timeout: 360s
-      retries: 3
+      retries: 5
     ports:
       - "5433:5432"
     # It is noticed on Microsoft Windows that the persistence of the postgress DB data may cause performance issues during the first container startup. 
