@@ -528,4 +528,97 @@ For example:
     ```bash
     docker-compose up -d
     ```
+
+## Updating the HCL DX docker-compose git repository
+
+Whenever a new release of HCL DX is available it is suggested to update this git-repository, because container-images may change in newer versions or new parameters will be introduced with new cumulative Fix versions for which then this git repository may not work correctly anymore, when it still use an older version.  
+
+**Best practice:**  
+
+- Always keep this git-repository up to date, before using it.  
+- Always download the latest container images. You can do that at best with the loadFromHarbor scripts.
+
+### Update procedure
+
+As soon as the git repository is cloned to a local directory use the following steps to keep it up to date:  
+
+1. If your HCL DX docker-compose environment is currently running, run command:  
+
+   ```bash
+   docker-compose down
+   ```  
+
+2. In a command line window (bash) go into the cloned git directory (for example: \HCL\git_repositories\dx-docker-compose)
+
+3. Run the command:  
+
+   ```bash
+   git fetch origin
+   ```  
+  
+   **note:**  
+   This will update the git repository.
+
+4. Run the loadFromHarbor script. That automatically will download the latest HCL DX container images.
+
+5. Execute the command:  
+
+    **On Windows:**  
+
+    ```bash  
+    set.sh
+    ```  
+
+    **On Linux:**
+
+    ```bash  
+    set.bat
+    ```  
+
+    **note:**  
+    That command automatically change the image-labels to the current versions.  
+
+6. Run the command:  
+
+    ```bash  
+    docker-compose up -d
+    ```  
+
+7. Run the command:  
+
+   **On Windows:**
+
+    ```bash  
+    installApps.bat
+    ```  
+
+   **On Linux:**
+
+    ```bash  
+    ./installApps.sh
+    ```  
+
+    **note:**  
+    This command is going to install the new add-ons like DAM or Content Composer on your new HCL DX environment etc.  
+
+8. And then restart the docker-composition once more with the commands:  
+
+    ```bash  
+    docker-compose down
+    docker-compose up -d
+    ```  
+
+9. (Optional) Cleanup the old container images in docker.
+
+    For that use at best the commands:  
+
+    ```bash  
+    docker images
+    ```
+
+   To list all available docker-images. And:  
+
+   ```bash  
+   docker rmi <container-image-name>:<version>
+   ```
   
