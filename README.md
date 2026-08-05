@@ -612,7 +612,7 @@ As soon as the git repository is cloned to a local directory, use the following 
   
    to bash into the new dx-core pod.  
 
-9. restart the WebSphere_Portal and the server1 with the following steps:  
+9. Restart the WebSphere_Portal and the server1 with the following steps:  
 
    1. Stop the WebSphere_Portal server
 
