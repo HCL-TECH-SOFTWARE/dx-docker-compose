@@ -531,7 +531,7 @@ For example:
 
 ## Updating the HCL DX docker-compose git repository
 
-Whenever a new release of HCL DX is available it is suggested to update this git-repository, because container-images may change in newer versions or new parameters will be introduced with new cumulative Fix versions for which then this git repository may not work correctly anymore, when it still use an older version.  
+Whenever a new release of HCL DX is available, we suggest you to update this git-repository. Container images and parameters may change with new Cumulative Fix versions. This git repository may not work correctly anymore, when it still use an older version.  
 
 **Best practice:**  
 
@@ -540,13 +540,16 @@ Whenever a new release of HCL DX is available it is suggested to update this git
 
 ### Update procedure
 
-As soon as the git repository is cloned to a local directory use the following steps to keep it up to date:  
+As soon as the git repository is cloned to a local directory, use the following steps to keep it up to date:  
 
-1. If your HCL DX docker-compose environment is currently running, run command:  
+1. If your HCL DX docker-compose environment is currently running, stop it with the command:  
 
    ```bash
    docker-compose down
    ```  
+
+   **note:**  
+   If local volume mappings are used in the past (for example for DAM etc.), please delete all files in the local volumes folders to ensure that the new startup then create the new file versions.  
 
 2. In a command line window (bash) go into the cloned git directory (for example: \HCL\git_repositories\dx-docker-compose)
 
@@ -557,19 +560,19 @@ As soon as the git repository is cloned to a local directory use the following s
    ```  
   
    **note:**  
-   This will update the git repository.
+   This will update the git repository.  
 
 4. Run the loadFromHarbor script. That automatically will download the latest HCL DX container images.
 
 5. Execute the command:  
 
-    **On Windows:**  
+    **On Linux/Mac:**  
 
     ```bash  
-    set.sh
+    ./set.sh
     ```  
 
-    **On Linux:**
+    **On Windows:**
 
     ```bash  
     set.bat
@@ -599,16 +602,40 @@ As soon as the git repository is cloned to a local directory use the following s
     ```  
 
     **note:**  
-    This command is going to install the new add-ons like DAM or Content Composer on your new HCL DX environment etc.  
+    This command is going to install the new add-ons like DAM or Content Composer on your new HCL DX environment.  
 
-8. And then restart the docker-composition once more with the commands:  
+8. Run the command:  
 
     ```bash  
-    docker-compose down
-    docker-compose up -d
+    docker exec -it dx-core /bin/bash
     ```  
+  
+   to bash into the new dx-core pod.  
 
-9. (Optional) Cleanup the old container images in docker.
+9. restart the WebSphere_Portal and the server1 with the following steps:  
+
+   1. Stop the WebSphere_Portal server
+
+       ```bash  
+       cd /opt/HCL/wp_profile/bin
+       ./stopServer.sh WebSphere_Portal        
+       ```
+
+   2. Sart the WebSphere_Portal server, again.
+
+       ```bash
+       ./startServer.sh WebSphere_Portal        
+       ```
+
+   3. Start the server1
+
+       ```bash
+       cd /opt/HCL/AppServer/profiles/cw_profile
+       ./startServer.sh server1   
+       exit
+       ```
+
+10. (Optional) Cleanup the old container images in docker.
 
     For that use at best the commands:  
 
@@ -616,9 +643,10 @@ As soon as the git repository is cloned to a local directory use the following s
     docker images
     ```
 
-   To list all available docker-images. And:  
+    To list all available docker-images.  
+    Old images can be deleted with command:  
 
-   ```bash  
-   docker rmi <container-image-name>:<version>
-   ```
+    ```bash  
+    docker rmi <container-image-name>:<version>
+    ```
   
