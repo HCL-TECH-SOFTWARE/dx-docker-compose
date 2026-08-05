@@ -621,7 +621,7 @@ As soon as the git repository is cloned to a local directory, use the following 
        ./stopServer.sh WebSphere_Portal        
        ```
 
-   2. Sart the WebSphere_Portal server, again.
+   2. Start the WebSphere_Portal server, again.
 
        ```bash
        ./startServer.sh WebSphere_Portal        
