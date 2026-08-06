@@ -528,4 +528,125 @@ For example:
     ```bash
     docker-compose up -d
     ```
+
+## Updating the HCL DX docker-compose git repository
+
+Whenever a new release of HCL DX is available, we suggest you to update this git-repository. Container images and parameters may change with new Cumulative Fix versions. This git repository may not work correctly anymore, when it still use an older version.  
+
+**Best practice:**  
+
+- Always keep this git-repository up to date, before using it.  
+- Always download the latest container images. You can do that at best with the loadFromHarbor scripts.
+
+### Update procedure
+
+As soon as the git repository is cloned to a local directory, use the following steps to keep it up to date:  
+
+1. If your HCL DX docker-compose environment is currently running, stop it with the command:  
+
+   ```bash
+   docker-compose down
+   ```  
+
+   **note:**  
+   If local volume mappings are used in the past (for example for DAM etc.), please delete all files in the local volumes folders to ensure that the new startup then create the new file versions.  
+
+2. In a command line window (bash) go into the cloned git directory (for example: \HCL\git_repositories\dx-docker-compose)
+
+3. Run the command:  
+
+   ```bash
+   git fetch origin
+   ```  
+  
+   **note:**  
+   This will update the git repository.  
+
+4. Run the loadFromHarbor script. That automatically will download the latest HCL DX container images.
+
+5. Execute the command:  
+
+    **On Linux/Mac:**  
+
+    ```bash  
+    ./set.sh
+    ```  
+
+    **On Windows:**
+
+    ```bash  
+    set.bat
+    ```  
+
+    **note:**  
+    That command automatically change the image-labels to the current versions.  
+
+6. Run the command:  
+
+    ```bash  
+    docker-compose up -d
+    ```  
+
+7. Run the command:  
+
+   **On Windows:**
+
+    ```bash  
+    installApps.bat
+    ```  
+
+   **On Linux:**
+
+    ```bash  
+    ./installApps.sh
+    ```  
+
+    **note:**  
+    This command is going to install the new add-ons like DAM or Content Composer on your new HCL DX environment.  
+
+8. Run the command:  
+
+    ```bash  
+    docker exec -it dx-core /bin/bash
+    ```  
+  
+   to bash into the new dx-core pod.  
+
+9. Restart the WebSphere_Portal and the server1 with the following steps:  
+
+   1. Stop the WebSphere_Portal server
+
+       ```bash  
+       cd /opt/HCL/wp_profile/bin
+       ./stopServer.sh WebSphere_Portal        
+       ```
+
+   2. Start the WebSphere_Portal server, again.
+
+       ```bash
+       ./startServer.sh WebSphere_Portal        
+       ```
+
+   3. Start the server1
+
+       ```bash
+       cd /opt/HCL/AppServer/profiles/cw_profile
+       ./startServer.sh server1   
+       exit
+       ```
+
+10. (Optional) Cleanup the old container images in docker.
+
+    For that use at best the commands:  
+
+    ```bash  
+    docker images
+    ```
+
+    To list all available docker-images.  
+    Old images can be deleted with command:  
+
+    ```bash  
+    docker rmi <container-image-name>:<version>
+    ```
   
